@@ -7,6 +7,20 @@ output: html_document
 
 ```{r}
 library(dplyr)
-library(readr)
+library(xlsx)
+
+post_injury <- read.xlsx(file = here::here("data/A111.1 Ladder Beam Post-Injury.xls"), 
+                         sheetName = "Summary", 
+                         rowIndex = 6:36, 
+                         colIndex = 3:9) %>% 
+  janitor::clean_names() 
+
+post_injury <- 
+  post_injury %>% 
+  select(animal, ave_good, ave_bad, lb_score)
+  
+post_injury
 ```
+
+
 
