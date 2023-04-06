@@ -1,0 +1,12 @@
+---
+title: "Cleaning and Extracting Post Injury Data"
+author: "Giles Carlos"
+date: "2023-04-06"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(readr)
+```
+
