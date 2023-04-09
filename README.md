@@ -1,6 +1,6 @@
 # Assessing Stem Cell Therapeutics in Murine Models 
 
-Giles Carlos,  Nathan Gin, Alexander Nathanael, Vinh Nguyen , Owen Sitiabudi
+Giles Carlos,  Nathan Gin, Alexander Nathanael, Vinh Nguyen, Owen Sitiabudi
 
 ### Summary:
 
