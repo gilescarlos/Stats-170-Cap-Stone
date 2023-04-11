@@ -83,6 +83,12 @@ raw_post_injury <- bind_rows(list_data_frame)
 raw_post_injury$total = raw_post_injury$left_bad + raw_post_injury$right_bad
 raw_post_injury$pct_bad = raw_post_injury$total / 100
 
+raw_post_injury <- raw_post_injury %>% 
+  mutate(type = case_when(
+    animal %in% c("1", "3", "8", "10", "13", "15", "20", "22", "25", "27", "31", "32") ~ "w",
+    animal %in% c("2", "4", "7", "9", "14", "16", "19", "21", "26", "28") ~ "k",
+    animal %in% c("5", "6", "11", "12", "17", "18", "23", "24", "29", "30") ~ "v"))
+
 # export to csv
 write_csv(raw_post_injury, here::here("data/raw_post_injury.csv"))
 ```
