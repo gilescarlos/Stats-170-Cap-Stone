@@ -11,9 +11,26 @@ library(readr)
 library(ggplot2)
 
 post_injury <- read_csv(here::here("data/post_injury.csv"))
+raw_post_injury <- read_csv(here::here("data/raw_post_injury.csv"))
 ```
 
 ```{r}
+aov_mod <- aov(total_bad ~ type, data = post_injury)
+summary(aov_mod)
 
+tukey_test <- TukeyHSD(aov_mod)
+tukey_test
+
+pairwise.t.test(post_injury$total_bad, post_injury$type)
+```
+
+```{r}
+aov_mod <- aov(total ~ type, data = raw_post_injury)
+summary(aov_mod)
+
+tukey_test <- TukeyHSD(aov_mod)
+tukey_test
+
+pairwise.t.test(raw_post_injury$total, raw_post_injury$type)
 ```
 
