@@ -15,7 +15,9 @@ post_injury <- read.xlsx(file = here::here("data/A111.1 Ladder Beam Post-Injury.
                          sheetName = "Summary", 
                          rowIndex = 6:36, 
                          colIndex = 3:9) %>% 
-  janitor::clean_names() 
+  janitor::clean_names() %>% 
+  rename(total_good = total_good_l_r_3_runs,
+         total_bad = total_bad_l_r_3_runs)
 
 # Adding column for type of mice
 # w - wildtype
@@ -30,7 +32,7 @@ post_injury <- post_injury %>%
 # selecting appropriate categories
 post_injury <- 
   post_injury %>% 
-  select(animal, ave_good, ave_bad, lb_score, type)
+  select(animal, total_good, total_bad, ave_good, ave_bad, lb_score, type)
   
 # writing new csv to data folder
 write_csv(post_injury, here::here("data/post_injury.csv"))
