@@ -18,6 +18,9 @@ post_injury <- read_csv(here::here("data/post_injury.csv"))
 post_injury
 
 post_injury %>% 
+  mutate(type = case_when(type == "w" ~ "Wildtype", 
+                          type == "k" ~ "Knock-out",
+                          type == "v" ~ "Vehicle")) %>% 
   ggplot(aes(x = type, y = ave_bad)) + 
   geom_boxplot() + 
   labs(x = "Type of Mice", y = "Average # Errors", title = "Distribution of Ladder Beam Performance Across Mice Groups") + 
