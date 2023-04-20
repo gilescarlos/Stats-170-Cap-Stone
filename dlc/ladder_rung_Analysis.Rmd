@@ -9,12 +9,11 @@ Version: 1.0
 # (1) Required Packages, Initialization, Customized Functions, 
 ```{r message=FALSE, warning=FALSE}
 # Download required packages 
-packages <-  c("plyr","ggplot2","RColorBrewer","scales", "gridExtra", "FSA", "tidyr", "mise", "stringr", "plotrix", "ggpmisc", "tibble", "forcats", "data.table", "dplyr", "PupillometryR", "gghalves")
+packages <-  c("ggplot2","RColorBrewer","scales", "gridExtra", "FSA", "tidyr", "mise", "stringr", "plotrix", "ggpmisc", "tibble", "forcats", "data.table", "dplyr", "PupillometryR", "gghalves")
 invisible(lapply(packages, library, character.only = TRUE))
 
 # Clearing all previous data, plots 
 mise()
-
 
 # Function
 median_se <- function(x) {
