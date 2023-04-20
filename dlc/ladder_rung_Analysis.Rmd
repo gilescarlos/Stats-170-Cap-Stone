@@ -8,8 +8,10 @@ Version: 1.0
 
 # (1) Required Packages, Initialization, Customized Functions, 
 ```{r message=FALSE, warning=FALSE}
-# Download required packages 
+# Import required packages 
 packages <-  c("ggplot2","RColorBrewer","scales", "gridExtra", "FSA", "tidyr", "mise", "stringr", "plotrix", "ggpmisc", "tibble", "forcats", "data.table", "dplyr", "PupillometryR", "gghalves")
+# ONLY RUN IF NECESSARY: 
+# invisible(lapply(packages, install.packages, character.only = TRUE))
 invisible(lapply(packages, library, character.only = TRUE))
 
 # Clearing all previous data, plots 
@@ -29,31 +31,45 @@ median_se <- function(x) {
 ```
 
 # (2) Get Raw Data of files we would like to analyse 
+
 ```{r}
+# list files in the directory with the Raw Ladder data
 files <- list.files(path = "Raw Files/Raw Ladder /", pattern = "*.csv", full.names = T)
 glimpse(files)
 
+# read.table for each file in the list of files
 data <- sapply(files, read.table, simplify=F, skip = 2, sep =",", header =T)
+# bind all of the data tables together row by row
 data <- do.call(rbind.data.frame, data)
 
 # Get correct names
 data_header <- read.table(paste("Raw Files/Raw Ladder /0days_Mouse_ID1.csv", sep = ""), sep =",", header =T)
+# First row from data_header is the first group of names
 header_1 <- data.frame(sapply(data_header[1,], as.character), stringsAsFactors=FALSE)
+# Second row from data_header is the second group of names
 header_2 <- data.frame(sapply(data_header[2,], as.character), stringsAsFactors=FALSE)
 
 # Add correct names to dataframe df
+# Concatenate header_1 + header_2 to get appropriate names for the data
 names(data) <- paste(header_1[,1],header_2[,1],sep = "_")
+# Row names are stored in a variable "name"
 data <- data %>% rownames_to_column("name")  %>%
   select(-name, everything())
 
 # Create from a wide data frame, "data"  a long data frame "long_data" in the correct structure: time, x_corr, y_corr, likelihood, parameter
 long_data <- NULL
+
+# repeating (80 - 1) / 3 because every 3 columns corresponds to a single row for the long data
+# each row represents a (x, y) location for a specific body part at a specific time with corresponding likelihood 
+# time corresponds to bodyparts_coord
 for(i in 1:((dim(data)[2] - 1) / 3)){
   long_data <- rbind(long_data,data.frame(time = data[,1], x_corr = data[,3*i-1], y_corr = data[,3*i], likelyhood = data[,3*i+1] , parameter = strsplit(paste(names(data)[3*i-1]),"_")[[1]][1]))
 }
 
 
 # Rename columns and add to long_data (you can add further categories like Video_id, group_id dependent on your experimental set-up)
+# the name variable in the wide data contains info on the day, mouse, and full_id
+# sub is used for pattern replacement to extract appropriate info from name variable 
 day <- as.factor(sub(".*/ *(.*?) *_Mouse.*", "\\1", data[,ncol(data)]))
 mouse <- as.factor(sub(".*Mouse_ *(.*?) *.csv.*", "\\1", data[,ncol(data)]))
 full_id <- as.factor(sub(".*/ *(.*?) *.csv.*", "\\1", data[,ncol(data)]))
@@ -77,6 +93,14 @@ long_data <- long_data %>% mutate(side = case_when(
 First, let's identify the ratio of data that has the likelyhood above 0.95 or 95%. We expect to get values close to 90-100%. We look here at every single video recorded from every mouse.
 
 ```{r message=FALSE}
+# grouping by mouse, side, day, full_id
+# if the likelihood is greater than 0.95 then confident
+# get number of "successes" and "fails" per (mouse, side, day, full_id) group
+# then group by mouse, day, full_id (no more side)
+# getting median success and median failed
+# ratio is the median number of successes over the median number of successes + median number of fails
+# gather function is superseded and similar to pivot_longer; state is new variable, values are between success and failed
+# 
 summary_of_reliability <- long_data %>%
   group_by(mouse, side, day, full_id) %>%
   mutate(confident= ifelse(likelyhood>0.95, "confident", "non-confident")) %>% # distinguish between confident and non-confident label
@@ -96,6 +120,7 @@ summary_of_reliability$state_new <- fct_relevel(summary_of_reliability$state_new
 
 
 (3.1) Bar plot for overview of every video of every mouse
+
 ```{r fig.height=2.5, fig.width=4, warning=FALSE}
 
 # # Set Colors
