@@ -13,14 +13,40 @@ output:
 library(tidyverse)
 library(kableExtra)
 library(knitr)
+library(dplyr)
+library(readr)
+library(ggplot2)
+
+post_injury <- read_csv(here::here("data/post_injury.csv"))
 ```
 
 
 # Introduction and Problem Statement
 
+
+
 # Related Work
 
+DeepLabCut 
+
 # Data Sets
+
+```{r echo = FALSE}
+kable(head(post_injury, 10),
+      escape = T, caption = "Example of First 10 Rows of Manually Input Data Set Obtained from Ladder Beam Task",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
+^[Mathis, A., Mamidanna, P., Cury, K.M. et al. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci 21, 1281–1289 (2018). https://doi.org/10.1038/s41593-018-0209-y]
+
+^[Weber, R.Z., Mulders, G., Kaiser, J. et al. Deep learning-based behavioral profiling of rodent stroke recovery. BMC Biol 20, 232 (2022). https://doi.org/10.1186/s12915-022-01434-9]
+
+^[Aljovic, A., Zhao, S., Chahin, M. et al. A deep learning-based toolbox for Automated Limb Motion Analysis (ALMA) in murine models of neurological disorders. Commun Biol 5, 131 (2022). https://doi.org/10.1038/s42003-022-03077-6]
+
+
+
 
 # Overall Technical Approach
 
