@@ -23,13 +23,23 @@ post_injury <- read_csv(here::here("data/post_injury.csv"))
 
 # Introduction and Problem Statement
 
+Spinal cord injury (SCI) is a debilitating condition that impacts up to 300,000 individuals in the U.S. each year. As such, a significant focus of stem cell research is dedicated to developing therapeutics that could help bring affected individuals’ livelihood back. Likewise, the tests and methods used to assess different therapeutics are incredibly important. The efficiency and rigor of these tests allow for discovery of novel therapies and help advance the research field dedicated to solving spinal cord injury. The ladder beam test is a behavioral method for assessing recovery following SCI in murine models. During the test, mice must walk across a ladder with fifty rungs. Injured mice are expected to have more missteps while recovering mice should have more plantar or sufficient steps. However, to properly utilize this test our sponsors must spend several hours analyzing hundreds of videos of mice completing the task in order to individually score each mouse's performance. Consequently, this tedious process tends to slow down the lab's workflow and some automation would provide a significant increase in efficiency. 
 
+Streamlining the ladder beam task and its data analysis would allow for significant efficiency in retrieving data necessary for the advancement of SCI research and therapeutics. Our primary goal is to use appropriate machine learning algorithms and build off existing research to aid in the lab’s data collection process for the ladder beam task. Secondly, we will assess the effectiveness of different treatments through appropriate statistical models and hypothesis tests. 
 
 # Related Work
 
-DeepLabCut 
+Access to ladder beam datasets and manual ground data for multiple published works as well as our current SCI project focused on stem cell and drugs. Currently there is no machine learning model for mice animal models that undergo contusion SCI, which will be the focus of this project. For this Capstone project, we propose to develop a machine-learning software that only requires inexpensive recording equipment and allows for limb placement tracking and comprehensive post-analysis that can reveal biologically relevant differences in locomotor function over the course of 16 weeks following SCI and therapeutic intervention.
+
+DeepLabCut^[Mathis, A., Mamidanna, P., Cury, K.M. et al. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci 21, 1281–1289 (2018). https://doi.org/10.1038/s41593-018-0209-y]
+
+^[Weber, R.Z., Mulders, G., Kaiser, J. et al. Deep learning-based behavioral profiling of rodent stroke recovery. BMC Biol 20, 232 (2022). https://doi.org/10.1186/s12915-022-01434-9]
+
+^[Aljovic, A., Zhao, S., Chahin, M. et al. A deep learning-based toolbox for Automated Limb Motion Analysis (ALMA) in murine models of neurological disorders. Commun Biol 5, 131 (2022). https://doi.org/10.1038/s42003-022-03077-6]
 
 # Data Sets
+
+We obtained our data from our sponsors at the UCI Stem Cell Research Center. Specifically, we received about a hundred videos of mice completing the ladder beam task and the 
 
 ```{r echo = FALSE}
 kable(head(post_injury, 10),
@@ -39,16 +49,12 @@ kable(head(post_injury, 10),
   row_spec(0, bold = TRUE)
 ```
 
-^[Mathis, A., Mamidanna, P., Cury, K.M. et al. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci 21, 1281–1289 (2018). https://doi.org/10.1038/s41593-018-0209-y]
-
-^[Weber, R.Z., Mulders, G., Kaiser, J. et al. Deep learning-based behavioral profiling of rodent stroke recovery. BMC Biol 20, 232 (2022). https://doi.org/10.1186/s12915-022-01434-9]
-
-^[Aljovic, A., Zhao, S., Chahin, M. et al. A deep learning-based toolbox for Automated Limb Motion Analysis (ALMA) in murine models of neurological disorders. Commun Biol 5, 131 (2022). https://doi.org/10.1038/s42003-022-03077-6]
-
-
-
 
 # Overall Technical Approach
+
+## Data Wrangling
+
+## Exploratory Data Analysis
 
 # Software
 
