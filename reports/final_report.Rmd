@@ -3,7 +3,77 @@ title: "Assessing Stem Cell Therapeutics in Murine Models"
 author: "Giles Carlos, Nathan Gin, Alexander Nathaneal, Vinh Nguyen, Owen Sitiabudi"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
-  html_document: default
+  pdf_document: 
+    number_sections: true
+  html_document:
+    number_sections: true
 ---
 
+```{r echo = FALSE, include = FALSE}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+```
+
+
+# Introduction and Problem Statement
+
+# Related Work
+
+# Data Sets
+
+# Overall Technical Approach
+
+# Software
+
+# Experiments and Evaluation
+
+# Notebook Description
+
+# Members Participation
+
+```{r echo = FALSE}
+covariates <- c("task 1")
+
+giles <- c("100%")
+nathan <- c("100%")
+alex <- c("100%")
+vinh <- c("100%")
+owen <- c("100%")
+
+workload_summary <- data.frame(covariates,
+                               linebreak(giles),
+                               linebreak(nathan), 
+                               linebreak(alex),
+                               linebreak(vinh),
+                               linebreak(owen))
+                               
+colnames(workload_summary) <- c("Task", "Giles", "Nathan", "Alex", "Vinh", "Owen")
+
+kable(workload_summary, 
+      escape = T, 
+      caption = "Percentage of workload across group members",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
+
+# Discussion and Conclusion
+
+*What did you learn about the methods and algorithms you worked with? What did you learn about their strengths? And their limitations?*
+
+> test text
+
+*What ended up being harder than you expected in your project? What was surprising about your project?*
+
+> test
+
+*What other lessons did you learn, expected or unexpected (e.g., perhaps about the tools you used, if you used anything out of the ordinary?*
+
+> test text
+
+*If you were in charge of a research lab, what ideas and directions might you invest in over the next year or two to try to make major progress on this problem? Feel free to be speculative in discussing possible future directions.*
+
+> test text
+ 
