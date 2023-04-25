@@ -1,0 +1,9 @@
+---
+title: "Assessing Stem Cell Therapeutics in Murine Models"
+author: "Giles Carlos, Nathan Gin, Alexander Nathaneal, Vinh Nguyen, Owen Sitiabudi"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
