@@ -118,7 +118,7 @@ dlc_train <-
 
 dlc_train <- dlc_train[-1,]
 
-dlc_train %>% 
+dlc_train <- dlc_train %>% 
   pivot_longer(-c(video, frame), 
                names_to = c("bodypart", ".value"),
                names_sep = "w_") %>% 
