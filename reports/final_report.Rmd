@@ -25,16 +25,12 @@ library(ggpubr)
 library(jpeg)
 library(png)
 
-<<<<<<< HEAD
-post_injury <- read_csv(here::here("post_injury.csv"))
-=======
 post_injury <- read_csv(here::here("data/post_injury.csv"))
 
 
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
 frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
->>>>>>> 9f8e7279aa16ec65d46f22659c526cb9250fbffb
 ```
 
 
@@ -58,15 +54,14 @@ kable(head(post_injury, 10),
   row_spec(0, bold = TRUE)
 ```
 
-```{r echo = FALSE}
-nrow(post_injury)
-ncol(post_injury)
+```{r, results= FALSE, echo = FALSE}
+n_row <- nrow(post_injury)
+n_col <- ncol(post_injury)
 summary(post_injury)
 str(post_injury)
 ```
 
-The post_injury data set has 30 rows and 7 columns where each column consists of 1 variable. The animal and type variables' type are categorical (nominal) and the rest of the variables are numerical variable (discrete). 
-
+The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). 
 
 ```{r echo = FALSE}
 kable(head(dlc_train, 10),
@@ -76,9 +71,27 @@ kable(head(dlc_train, 10),
   row_spec(0, bold = TRUE)
 ```
 
+The above table corresponds to a single training data set from one video of the ladder beam task being completed. From this particular video, nineteen frames were extracted which produced a data set with `r nrow(dlc_train)` rows and `r ncol(dlc_train)` columns. Each row represents a the location of one of the mouse's paws during a particular frame from a specific video. The video column indicates what video the frames were extracted from. Likewise, the frame column indicates which particular frame the body part was being tracked. Lastly, the body part, x, and y column correspond to which paw, the x coordinate, and the y coordinate, respectively. As we obtain more videos from our collaborators we plan on having a much larger training set with multiple videos and more frames. 
+
 # Overall Technical Approach
 
 ## Data Wrangling
+
+In order to utilize the videos provided by us, we needed an efficient tool for extracting frames in the video and labeling the location of mouse paws. We utilized DeepLabCut (DLC), an open source Python tool for developing models capable of tracking animal behavior and movement. The process for extracting our data from this tool goes as follows. First, we input a video or list of videos that we wish to obtain training data from into DLC. DLC then extracts a particular set of frames from each video according to the options we specify. Next, we individually label each frame by marking the location of each of the four mouse paws. Lastly, from those labeled frames DLC produces a training data set. 
+
+However, the training data must then be pre-processed since the outputted format is not efficient to work with. As shown in the table below, each frame corresponds to a single row but the names for the columns need to be cleaned. In order to clean the training dataset initially produced by DLC into the table described in the Dataset section, the column names had to be changed and rows could be broken down to represent multiple body parts. First, we removed the scorer's name since it is irrelevant to the data. The columns containing the video file and the frame were given appropriate names. Then, each body part was given a correct column name. For example, bodypart1 corresponded to the front left paw of the mouse. Lastly, each individual row was transformed into four rows, one corresponding to each paw of the mouse at that specific frame. 
+
+```{r message = FALSE, echo = FALSE}
+unclean_train_data <- read_csv(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/CollectedData_Giles.csv"))
+
+kable(head(unclean_train_data[,1:5], 10),
+    escape = T, caption = "Example of First 10 Rows and 5 Columns of Uncleaned Training Data from a Single Video",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
+
 
 ## Exploratory Data Analysis
 
@@ -124,7 +137,9 @@ dlc_train %>%
        title = "Tracking Individual Paws Throughout a Single Video")
 ```
 
-```{r echo=FALSE}
+The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were not done with a stationary camera so although the mouse may have been moving forward, during the frames it may appear that the mouse is not moving that much. 
+
+```{r echo=FALSE, message = FALSE}
 post_injury %>% 
   mutate(type = case_when(type == "w" ~ "Wildtype", 
                           type == "k" ~ "Knock-out",
@@ -135,7 +150,7 @@ ggplot(aes(x=total_good)) +
   facet_wrap(vars(type))
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message = FALSE}
 ggplot(data=post_injury, aes(x=total_bad)) + 
   geom_histogram(col=I('white')) + 
   labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Mouse Count', y='Total Bad Steps') +
