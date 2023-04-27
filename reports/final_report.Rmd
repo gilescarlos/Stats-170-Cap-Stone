@@ -54,6 +54,14 @@ kable(head(post_injury, 10),
   row_spec(0, bold = TRUE)
 ```
 
+```{r echo = FALSE}
+kable(head(dlc_train, 10),
+      escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
 
 # Overall Technical Approach
 
@@ -72,7 +80,7 @@ post_injury %>%
   theme_classic()
 ```
 
-```{r}
+```{r echo = FALSE, warning = FALSE}
 dlc_train %>% 
   filter(frame == "img1041.png") %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
