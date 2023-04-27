@@ -21,8 +21,20 @@ library(knitr)
 library(dplyr)
 library(readr)
 library(ggplot2)
+library(ggpubr)
+library(jpeg)
+library(png)
 
+<<<<<<< HEAD
 post_injury <- read_csv(here::here("post_injury.csv"))
+=======
+post_injury <- read_csv(here::here("data/post_injury.csv"))
+
+
+dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
+
+frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
+>>>>>>> 9f8e7279aa16ec65d46f22659c526cb9250fbffb
 ```
 
 
@@ -55,25 +67,14 @@ str(post_injury)
 
 The post_injury data set has 30 rows and 7 columns where each column consists of 1 variable. The animal and type variables' type are categorical (nominal) and the rest of the variables are numerical variable (discrete). 
 
-```{r echo=FALSE}
-post_injury %>% 
-  mutate(type = case_when(type == "w" ~ "Wildtype", 
-                          type == "k" ~ "Knock-out",
-                          type == "v" ~ "Vehicle")) %>% 
-ggplot(aes(x=total_good)) + 
-  geom_histogram(col=I("white")) + 
-  labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
-  facet_wrap(vars(type))
-```
-```{r echo=FALSE}
-ggplot(data=post_injury, aes(x=total_bad)) + 
-  geom_histogram(col=I('white')) + 
-  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Mouse Count', y='Total Bad Steps') +
-  facet_wrap(vars(type))
-```
 
-The above two graphs show the distribution of the total good and bad steps across the mice groups. 
-
+```{r echo = FALSE}
+kable(head(dlc_train, 10),
+    escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
 
 # Overall Technical Approach
 
@@ -91,6 +92,57 @@ post_injury %>%
   labs(x = "Type of Mice", y = "Average # Errors", title = "Distribution of Ladder Beam Performance Across Mice Groups") + 
   theme_classic()
 ```
+
+```{r echo = FALSE, warning = FALSE}
+dlc_train %>% 
+  filter(frame == "img1041.png") %>% 
+  mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
+                   bodypart == "back_right_paw" ~ "Back Right Paw",
+                   bodypart == "front_left_paw" ~ "Front Left Paw",
+                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+  ggplot(aes(x = x, y = y, color = bodypart)) + 
+  background_image(frame) +
+  geom_point() +
+  ylim(1080, 0) + 
+  xlim(0, 1920) + 
+  labs(x = "X",
+       y = "Y", 
+       color = "Body Part")
+
+dlc_train %>% 
+  mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
+                   bodypart == "back_right_paw" ~ "Back Right Paw",
+                   bodypart == "front_left_paw" ~ "Front Left Paw",
+                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+  ggplot(aes(x = x, y = y, color = bodypart)) + 
+  geom_point() +
+  ylim(1080, 0) + 
+  xlim(0, 1920) +
+  labs(x = "X",
+       y = "Y", 
+       color = "Body Part",
+       title = "Tracking Individual Paws Throughout a Single Video")
+```
+
+```{r echo=FALSE}
+post_injury %>% 
+  mutate(type = case_when(type == "w" ~ "Wildtype", 
+                          type == "k" ~ "Knock-out",
+                          type == "v" ~ "Vehicle")) %>% 
+ggplot(aes(x=total_good)) + 
+  geom_histogram(col=I("white")) + 
+  labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
+  facet_wrap(vars(type))
+```
+
+```{r echo=FALSE}
+ggplot(data=post_injury, aes(x=total_bad)) + 
+  geom_histogram(col=I('white')) + 
+  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Mouse Count', y='Total Bad Steps') +
+  facet_wrap(vars(type))
+```
+
+The above two graphs show the distribution of the total good and bad steps across the mice groups. 
 
 
 # Software
