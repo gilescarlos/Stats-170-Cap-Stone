@@ -21,8 +21,16 @@ library(knitr)
 library(dplyr)
 library(readr)
 library(ggplot2)
+library(ggpubr)
+library(jpeg)
+library(png)
 
 post_injury <- read_csv(here::here("data/post_injury.csv"))
+
+
+dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
+
+frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
 ```
 
 
@@ -62,6 +70,37 @@ post_injury %>%
   geom_boxplot() + 
   labs(x = "Type of Mice", y = "Average # Errors", title = "Distribution of Ladder Beam Performance Across Mice Groups") + 
   theme_classic()
+```
+
+```{r}
+dlc_train %>% 
+  filter(frame == "img1041.png") %>% 
+  mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
+                   bodypart == "back_right_paw" ~ "Back Right Paw",
+                   bodypart == "front_left_paw" ~ "Front Left Paw",
+                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+  ggplot(aes(x = x, y = y, color = bodypart)) + 
+  background_image(frame) +
+  geom_point() +
+  ylim(1080, 0) + 
+  xlim(0, 1920) + 
+  labs(x = "X",
+       y = "Y", 
+       color = "Body Part")
+
+dlc_train %>% 
+  mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
+                   bodypart == "back_right_paw" ~ "Back Right Paw",
+                   bodypart == "front_left_paw" ~ "Front Left Paw",
+                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+  ggplot(aes(x = x, y = y, color = bodypart)) + 
+  geom_point() +
+  ylim(1080, 0) + 
+  xlim(0, 1920) +
+  labs(x = "X",
+       y = "Y", 
+       color = "Body Part",
+       title = "Tracking Individual Paws Throughout a Single Video")
 ```
 
 
