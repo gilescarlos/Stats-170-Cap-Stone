@@ -9,9 +9,11 @@ output: html_document
 
 ```{r}
 library(dplyr)
+library(tidyr)
 library(xlsx)
 library(readr)
 library(readxl)
+library(stringr)
 ```
 
 # Summary Data
@@ -92,6 +94,41 @@ raw_post_injury <- raw_post_injury %>%
 # export to csv
 write_csv(raw_post_injury, here::here("data/raw_post_injury.csv"))
 ```
+
+# Training Data from DLC
+
+```{r}
+dlc_train <- read_csv(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/CollectedData_Giles.csv"),
+                      col_names = TRUE,
+                      skip = 1) 
+dlc_train <- dlc_train[,-1]
+
+dlc_train <- 
+  dlc_train %>% 
+  rename(video = `...2`,
+         frame = `...3`,
+         front_left_paw_x = `bodypart1...4`,
+         front_left_paw_y = `bodypart1...5`,
+         front_right_paw_x = `bodypart2...6`,
+         front_right_paw_y = `bodypart2...7`,
+         back_left_paw_x = `bodypart3...8`,
+         back_left_paw_y = `bodypart3...9`,
+         back_right_paw_x = `objectA...10`,
+         back_right_paw_y = `objectA...11`) 
+
+dlc_train <- dlc_train[-1,]
+
+dlc_train %>% 
+  pivot_longer(-c(video, frame), 
+               names_to = c("bodypart", ".value"),
+               names_sep = "w_") %>% 
+  mutate(bodypart = as.factor(paste(bodypart, "w", sep="")),
+         x = as.numeric(x),
+         y = as.numeric(y)) 
+
+write_csv(dlc_train, here::here("data/dlc_train_example_video.csv"))
+```
+
 
 
 
