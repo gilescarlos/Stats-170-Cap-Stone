@@ -22,7 +22,7 @@ library(dplyr)
 library(readr)
 library(ggplot2)
 
-post_injury <- read_csv(here::here("data/post_injury.csv"))
+post_injury <- read_csv(here::here("post_injury.csv"))
 ```
 
 
@@ -45,6 +45,34 @@ kable(head(post_injury, 10),
   kable_styling(latex_options = "HOLD_position") %>% 
   row_spec(0, bold = TRUE)
 ```
+
+```{r echo = FALSE}
+nrow(post_injury)
+ncol(post_injury)
+summary(post_injury)
+str(post_injury)
+```
+
+The post_injury data set has 30 rows and 7 columns where each column consists of 1 variable. The animal and type variables' type are categorical (nominal) and the rest of the variables are numerical variable (discrete). 
+
+```{r echo=FALSE}
+post_injury %>% 
+  mutate(type = case_when(type == "w" ~ "Wildtype", 
+                          type == "k" ~ "Knock-out",
+                          type == "v" ~ "Vehicle")) %>% 
+ggplot(aes(x=total_good)) + 
+  geom_histogram(col=I("white")) + 
+  labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
+  facet_wrap(vars(type))
+```
+```{r echo=FALSE}
+ggplot(data=post_injury, aes(x=total_bad)) + 
+  geom_histogram(col=I('white')) + 
+  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Mouse Count', y='Total Bad Steps') +
+  facet_wrap(vars(type))
+```
+
+The above two graphs show the distribution of the total good and bad steps across the mice groups. 
 
 
 # Overall Technical Approach
