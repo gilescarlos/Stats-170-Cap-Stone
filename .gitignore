@@ -38,6 +38,9 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-data
+!data
+data/*
+!data/dlc_train_example_video.csv
+!data/post_injury.csv
 
 .DS_Store
