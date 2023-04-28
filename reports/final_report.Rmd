@@ -61,7 +61,7 @@ summary(post_injury)
 str(post_injury)
 ```
 
-The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). 
+The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). Total_good and Total_bad measures the quality of the steps of the mouse as it traverse through the ladder beam. Type variable indicate 1 of the 3 mouse types: wild (w), knock-out (k), and vehicle (v). Lb_score shows the overall performance of each mice.
 
 ```{r echo = FALSE}
 kable(head(dlc_train, 10),
