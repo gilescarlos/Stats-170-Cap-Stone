@@ -4,7 +4,7 @@ author: |
   | Giles Carlos, 54951701, gpcarlos@uci.edu
   | Nathan Gin, 67117388, nbgin@uci.edu
   | Alexander Nathaneal, 54951701, anathana@uci.edu
-  | Vinh Nguyen, 54951701, vinhhn2@uci.edu
+  | Vinh Nguyen, 50036019, vinhhn2@uci.edu
   | Owen Sitiabudi, 54951701, ositiabu@uci.edu
 date: "Github Repository: https://github.com/gilescarlos/Stats-170-Cap-Stone"
 output:
