@@ -61,7 +61,7 @@ summary(post_injury)
 str(post_injury)
 ```
 
-The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). 
+The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). There are three types of mice - wildtype, knockout and vehicle. On average, each mice has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
 
 ```{r echo = FALSE}
 kable(head(dlc_train, 10),
@@ -149,15 +149,18 @@ ggplot(aes(x=total_good)) +
   labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
   facet_wrap(vars(type))
 ```
-
 ```{r echo=FALSE, message = FALSE}
-ggplot(data=post_injury, aes(x=total_bad)) + 
-  geom_histogram(col=I('white')) + 
-  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Mouse Count', y='Total Bad Steps') +
+post_injury %>% 
+  mutate(type = case_when(type == "w" ~ "Wildtype", 
+                          type == "k" ~ "Knock-out",
+                          type == "v" ~ "Vehicle")) %>% 
+ggplot(aes(x=total_bad)) + 
+  geom_histogram(col=I("white")) + 
+  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Total Bad Steps', y='Mouse Count') +
   facet_wrap(vars(type))
 ```
 
-The above two graphs show the distribution of the total good and bad steps across the mice groups. 
+The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different numbers of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are evenly distributed. 
 
 
 # Software
