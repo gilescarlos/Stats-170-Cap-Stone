@@ -178,6 +178,38 @@ The above two graphs show the distribution of the total good and bad steps acros
 
 # Software
 
+Self-written software used for this project:
+
+```{r}
+script_names <- c("cleaning_extracting.Rmd", "anova_model.Rmd", "eda.Rmd", "dlc_model.ipynb")
+descriptions <- c("A script to clean and transform data for appropriate analysis", "A script for creating visualizations and statistical analyses (ANOVA) on two datasets ('post_injury' and 'raw_post_injury') to understand the differences in specific variables across different 'type' groups in the two datasets", "An exploratory data analysis (EDA) script for visualizing ladder beam performance and tracking individual paws throughout a single video", "A data analysis notebook to train model using DeepLabCut to create labeled video")
+
+as.data.frame(cbind(script_names, descriptions)) %>% 
+  rename(Scripts = script_names,
+         Descriptions = descriptions) %>% 
+  kable(escape = T, 
+        caption = "",
+        align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
+Third-party software and libraries used:
+
+```{r}
+script_names <- c("DeepLabCut (DLC)", "TensorFlow")
+descriptions <- c("A software package for animal pose estimation using deep neural networks", "A Python library for machine learning, mainly on deep neural networks")
+
+as.data.frame(cbind(script_names, descriptions)) %>% 
+  rename(Scripts = script_names,
+         Descriptions = descriptions) %>% 
+  kable(escape = T, 
+        caption = "",
+        align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
+
 # Experiments and Evaluation
 
 # Notebook Description
