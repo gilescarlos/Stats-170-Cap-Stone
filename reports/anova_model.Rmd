@@ -9,14 +9,22 @@ output: html_document
 library(dplyr)
 library(readr)
 library(ggplot2)
+library(kableExtra)
 
 post_injury <- read_csv(here::here("post_injury.csv"))
 raw_post_injury <- read_csv(here::here("raw_post_injury.csv"))
 ```
 
 ```{r}
+post_injury %>% 
+  group_by(type) %>% 
+  summarise(mean_steps = mean(ave_bad),
+            var_steps = var(ave_bad))
 aov_mod <- aov(total_bad ~ type, data = post_injury)
 summary(aov_mod)
+qqnorm(aov_mod$residuals)
+qqline(aov_mod$residuals)
+
 
 tukey_test <- TukeyHSD(aov_mod)
 tukey_test

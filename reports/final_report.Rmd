@@ -24,6 +24,7 @@ library(ggplot2)
 library(ggpubr)
 library(jpeg)
 library(png)
+library(gridExtra)
 
 post_injury <- read_csv(here::here("data/post_injury.csv"))
 
@@ -113,7 +114,7 @@ post_injury %>%
 When comparing the three groups of mice, we can see that on average the knock-out mice performed the worst while the wild type performed the best. The vehicle group and wildtype group appear to have similar variance while the knock-out group's variance is slightly higher. Based on the plot, there may be some evidence that the stem cell therapeutic helps certain groups of mice in their recovery a little more. 
 
 ```{r echo = FALSE, warning = FALSE}
-dlc_train %>% 
+track_paws1<- dlc_train %>% 
   filter(frame == "img1041.png") %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
@@ -126,9 +127,10 @@ dlc_train %>%
   xlim(0, 1920) + 
   labs(x = "X",
        y = "Y", 
-       color = "Body Part")
+       color = "Body Part") + 
+  theme(legend.position = "none")
 
-dlc_train %>% 
+track_paws2 <- dlc_train %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
@@ -139,8 +141,10 @@ dlc_train %>%
   xlim(0, 1920) +
   labs(x = "X",
        y = "Y", 
-       color = "Body Part",
-       title = "Tracking Individual Paws Throughout a Single Video")
+       color = "Body Part") + 
+  theme(legend.position = c(0.25, 0.875),
+        legend.key.size = unit(0.25, 'cm'))
+grid.arrange(track_paws1, track_paws2, ncol = 2)
 ```
 
 The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were not done with a stationary camera so although the mouse may have been moving forward, during the frames it may appear that the mouse is not moving that much. 
