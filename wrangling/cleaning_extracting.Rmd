@@ -20,7 +20,7 @@ library(stringr)
 
 ```{r}
 # Loading in data and cleaning names
-post_injury <- read.xlsx(file = here::here("A111.1 Ladder Beam Post-Injury.xls"), 
+post_injury <- read.xlsx(file = here::here("data/A111.1 Ladder Beam Post-Injury.xls"), 
                          sheetName = "Summary", 
                          rowIndex = 6:36, 
                          colIndex = 3:9) %>% 
@@ -92,7 +92,7 @@ raw_post_injury <- raw_post_injury %>%
     animal %in% c("5", "6", "11", "10(11)", "12", "17", "18", "23", "24", "29", "30") ~ "v"))
 
 # export to csv
-write_csv(raw_post_injury, here::here("raw_post_injury.csv"))
+write_csv(raw_post_injury, here::here("data/raw_post_injury.csv"))
 ```
 
 # Training Data from DLC

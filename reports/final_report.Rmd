@@ -30,11 +30,7 @@ post_injury <- read_csv(here::here("data/post_injury.csv"))
 
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
-<<<<<<< HEAD
 frame <- readPNG(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/img0924.png"))
-=======
-frame <- readPNG(here::here("data/train/labeled-data/20230112_145948/img0990.png"))
->>>>>>> 913a798ff0a1a67c02ad0ca1af491290fc2864e3
 ```
 
 
@@ -52,10 +48,10 @@ We obtained our data from our sponsors at the UCI Stem Cell Research Center. Spe
 
 ```{r echo = FALSE}
 options(digits = 3)
-colnames(post_injury) <- c("Animal ID", "Total Good Steps", "Total Bad Steps", "Avg Good Steps", "Avg Bad Steps", "LB Score", "Type")
 
 kable(head(post_injury, 10),
       escape = T, 
+      col.names = c("Animal ID", "Total Good Steps", "Total Bad Steps", "Avg Good Steps", "Avg Bad Steps", "LB Score", "Type"),
       caption = "Example of First 10 Rows of Manually Input Data Set Obtained from Ladder Beam Task",
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
@@ -76,10 +72,10 @@ The post_injury data set has `r n_row` rows and `r n_col` columns where each col
 >>>>>>> 2147f11e9d38e314c422005cd6c8ceef4ae8aef8
 
 ```{r echo = FALSE}
-colnames(dlc_train) <- c("Video", "Frame", "Bodypart", "X", "Y")
 
 kable(head(dlc_train, 10),
-    escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
+      col.names = c("Video", "Frame", "Bodypart", "X", "Y"),
+      escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
   row_spec(0, bold = TRUE)
