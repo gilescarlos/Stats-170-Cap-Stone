@@ -37,7 +37,7 @@ frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/
 
 # Introduction and Problem Statement
 
-Spinal cord injury (SCI) is a debilitating condition that impacts up to 300,000 individuals in the U.S. each year. As such, a significant focus of stem cell research is dedicated to developing therapeutics that could help bring affected individuals’ livelihood back. Likewise, the tests and methods used to assess different therapeutics are incredibly important. The efficiency and rigor of these tests allow for discovery of novel therapies and help advance the research field dedicated to solving spinal cord injury. The ladder beam test is a behavioral method for assessing recovery following SCI in murine models. During the test, mice must walk across a ladder with fifty rungs. Injured mice are expected to have more missteps while recovering mice should have more plantar or sufficient steps. However, to properly utilize this test our sponsors must spend several hours analyzing hundreds of videos of mice completing the task in order to individually score each mouse's performance. Consequently, this tedious process tends to slow down the lab's workflow and some automation would provide a significant increase in efficiency. Streamlining the ladder beam task and its data analysis would allow for significant efficiency in retrieving data necessary for the advancement of SCI research and therapeutics. Our primary goal is to use appropriate machine learning algorithms and build off existing research to aid in the lab’s data collection process for the ladder beam task. Secondly, we will assess the effectiveness of different treatments through appropriate statistical models and hypothesis tests. 
+Spinal cord injury (SCI) is a debilitating condition that impacts up to 300,000 individuals in the U.S. each year. As such, a significant focus of stem cell research is dedicated to developing therapeutics that could help bring affected individuals’ livelihood back. Likewise, the tests and methods used to assess different therapeutics are incredibly important. The efficiency and rigor of these tests allow for discovery of novel therapies and help advance the research field dedicated to solving spinal cord injury. The ladder beam test is a behavioral method for assessing recovery following SCI in murine models. There are 3 types of mice: Knock-out, Wildtype, and Vehicle. The Knock-out mice have their CD44 gene removed to study its absent effect in recovery. The Wildtype are the control group while the Vehicle type have an additional injection. During the test, mice must walk across a ladder with fifty rungs. Injured mice are expected to have more missteps while recovering mice should have more plantar or sufficient steps. However, to properly utilize this test our sponsors must spend several hours analyzing hundreds of videos of mice completing the task in order to individually score each mouse's performance. Consequently, this tedious process tends to slow down the lab's workflow and some automation would provide a significant increase in efficiency. Streamlining the ladder beam task and its data analysis would allow for significant efficiency in retrieving data necessary for the advancement of SCI research and therapeutics. Our primary goal is to use appropriate machine learning algorithms and build off existing research to aid in the lab’s data collection process for the ladder beam task. Secondly, we will assess the effectiveness of different treatments through appropriate statistical models and hypothesis tests. 
 
 # Related Work
 
@@ -48,8 +48,12 @@ Several other labs have encountered this bottleneck in efficiency and have aimed
 We obtained our data from our sponsors at the UCI Stem Cell Research Center. Specifically, we received about a hundred videos of mice completing the ladder beam task and the corresponding manually labeled excel sheet corresponding to the videos. 
 
 ```{r echo = FALSE}
+options(digits = 3)
+colnames(post_injury) <- c("Animal ID", "Total Good Steps", "Total Bad Steps", "Avg Good Steps", "Avg Bad Steps", "LB Score", "Type")
+
 kable(head(post_injury, 10),
-      escape = T, caption = "Example of First 10 Rows of Manually Input Data Set Obtained from Ladder Beam Task",
+      escape = T, 
+      caption = "Example of First 10 Rows of Manually Input Data Set Obtained from Ladder Beam Task",
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
   row_spec(0, bold = TRUE)
@@ -63,12 +67,14 @@ str(post_injury)
 ```
 
 <<<<<<< HEAD
-The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). There are three types of mice - wildtype, knockout and vehicle. On average, each mice has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
+The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). There are three types of mice - Wildtype, Knock-out and Vehicle. On average, each mouse has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
 =======
-The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). Total_good and Total_bad measures the quality of the steps of the mouse as it traverse through the ladder beam. Type variable indicate 1 of the 3 mouse types: wild (w), knock-out (k), and vehicle (v). Lb_score shows the overall performance of each mice. On average, each mice has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
+The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). Total_good and Total_bad measures the quality of the steps of the mouse as it traverse through the ladder beam. Type variable indicate 1 of the 3 mouse types: wild (w), knock-out (k), and vehicle (v). Lb_score shows the overall performance of each mouse On average, each mouse has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
 >>>>>>> 2147f11e9d38e314c422005cd6c8ceef4ae8aef8
 
 ```{r echo = FALSE}
+colnames(dlc_train) <- c("Video", "Frame", "Bodypart", "X", "Y")
+
 kable(head(dlc_train, 10),
     escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
       align = 'l') %>% 
@@ -144,33 +150,46 @@ track_paws2 <- dlc_train %>%
        color = "Body Part") + 
   theme(legend.position = c(0.25, 0.875),
         legend.key.size = unit(0.25, 'cm'))
+
 grid.arrange(track_paws1, track_paws2, ncol = 2)
 ```
 
 The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were not done with a stationary camera so although the mouse may have been moving forward, during the frames it may appear that the mouse is not moving that much. 
 
 ```{r echo=FALSE, message = FALSE}
-post_injury %>% 
-  mutate(type = case_when(type == "w" ~ "Wildtype", 
-                          type == "k" ~ "Knock-out",
-                          type == "v" ~ "Vehicle")) %>% 
-ggplot(aes(x=total_good)) + 
-  geom_histogram(col=I("white")) + 
-  labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
+post_injury %>%
+  mutate(type = case_when(
+    type == "w" ~ "Wildtype",
+    type == "k" ~ "Knock-out",
+    type == "v" ~ "Vehicle"
+  )) %>%
+  ggplot(aes(x = total_good)) +
+  geom_density(fill = "white", alpha = 0.5) +
+  labs(
+    title = "Distribution of Total Good Steps Across Mice Groups",
+    x = "Total Good Steps",
+    y = "Density"
+  ) +
   facet_wrap(vars(type))
 ```
 ```{r echo=FALSE, message = FALSE}
-post_injury %>% 
-  mutate(type = case_when(type == "w" ~ "Wildtype", 
-                          type == "k" ~ "Knock-out",
-                          type == "v" ~ "Vehicle")) %>% 
-ggplot(aes(x=total_bad)) + 
-  geom_histogram(col=I("white")) + 
-  labs(title='Distribution of Total Bad Steps Across Mice Groups', x='Total Bad Steps', y='Mouse Count') +
+post_injury %>%
+  mutate(type = case_when(
+    type == "w" ~ "Wildtype",
+    type == "k" ~ "Knock-out",
+    type == "v" ~ "Vehicle"
+  )) %>%
+  ggplot(aes(x = total_bad)) +
+  geom_density(fill = "white", alpha = 0.5) +
+  labs(
+    title = "Distribution of Total Bad Steps Across Mice Groups",
+    x = "Total Bad Steps",
+    y = "Density"
+  ) +
   facet_wrap(vars(type))
 ```
 
-The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different numbers of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are evenly distributed. 
+The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different density of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are differently distributed. 
 <<<<<<< HEAD
 
 =======
@@ -247,11 +266,11 @@ kable(workload_summary,
 
 *What did you learn about the methods and algorithms you worked with? What did you learn about their strengths? And their limitations?*
 
-> test text
+> In our project, we worked with DeepLabCut, a deep learning-based software for tracking body parts in videos. We found that DeepLabCut has significant strengths in accurately and efficiently tracking the movement of mice during the ladder beam task.However, collecting and annotating a large dataset can be time-consuming and labor-intensive. 
 
 *What ended up being harder than you expected in your project? What was surprising about your project?*
 
-> test
+> A surprising aspect of the project was the complexity of the mouse movements captured in the ladder beam task videos. The variability in step patterns, paw placements, and subtle differences in behavior among mice posed challenges in accurately tracking and analyzing the data.
 
 *What other lessons did you learn, expected or unexpected (e.g., perhaps about the tools you used, if you used anything out of the ordinary?*
 
@@ -259,5 +278,5 @@ kable(workload_summary,
 
 *If you were in charge of a research lab, what ideas and directions might you invest in over the next year or two to try to make major progress on this problem? Feel free to be speculative in discussing possible future directions.*
 
-> test text
+> In the future, we would film the mouse doing the ladder beam test in a more standarized way rather than hand filming. Ultimately, setting up a better working environment for pose estimation in the videos.
  
