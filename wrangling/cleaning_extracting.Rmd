@@ -44,7 +44,7 @@ post_injury <-
   select(animal, total_good, total_bad, ave_good, ave_bad, lb_score, type)
   
 # writing new csv to data folder
-write_csv(post_injury, here::here("post_injury.csv"))
+write_csv(post_injury, here::here("data/post_injury.csv"))
 ```
 
 # Data From Each Sheet (Individual Mice)
