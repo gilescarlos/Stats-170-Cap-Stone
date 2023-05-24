@@ -248,17 +248,17 @@ as.data.frame(cbind(script_names, descriptions)) %>%
 ```
 
 # Experiments and Evaluation
-Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateuoed at around 0.003% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.00096% error rate with a p-value of 0.02. The runtime took around _______hours to train the neural network. 
+Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateaued at around 0.003% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.00096% error rate with a p-value of 0.02. The run time took around _______hours to train the neural network. 
 
-After that, we were able to use DLC to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeleton structure, body parts coordinates each frame, likelihood of each bodypart per frame, and the delta x and delta y count by body part. 
+After that, we were able to use DLC to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeleton structure, body parts coordinates each frame, likelihood of each body part per frame, and the delta x and delta y count by body part. 
 
 The x and y coordinate plots versus time plot should be continuous, but because of the obstructions, it is dotted points which shows the difficulty the neural network had in identifying the body parts as it moved across the ladder beams. 
 
-The likelihood plot shows, 
+The likelihood plot shows, the likelihood that the body part at each frame is predicted correctly. Ideally, the likelihood versus frames plot would keep a likelihood of one at the top of the graph if there was high confidence that the mouses body part would be there. However, in this situation, the likelihood of all the parts stays relatively low never reaching 1. Another interesting thing to notes is that the nose and front paws have the highest likelihood where the tail and back of the mouse is harder to determine. 
 
-The histogram of each body parts delta x and y shows the 
+The histogram of each body parts delta x and y shows the difference in pixel distance between labels in consecutive frames. This value should remain low because over time as it would show a consistent tracking of each body part. Large jumps in these values over a frame would mean that it is losing track of that body parts position. This corroborates the likelihood plot and shows the front of the mouse is better tracked with problems keeping track of the tail and middle of the mouse. 
 
-(SHOW PLOTS OF NEW STUFF) 
+(SHOW PLOTS OF NEW STUFF)
 
 Through analysis of the videos and files the containing the results of the deep neural network on the videos, it showed the coordinates and likelihood of each part of the mouses skeleton across each frame of the video. They were able to accurately track the body parts a majority of the time but the obstructions from the ladder beams made it impossible to track all parts of the mouse 100% of the time. Additionally, although the videos were taken in higher quality and from a mounted camera, the distance from the mouse made it difficult to manually label let alone for the neural network to process. This is why there are many gaps in the data and rarely times where it detects the entire skeleton of the mouse at once. Looking frame by frame, you can see that it struggles to label all the parts with high confidence and often is unsure of whether the whiter parts of the body are the nose or a paw and where the middle, black parts of the body are due to these same regions. However, in the video, when it does detect the body part, it is accurate a majority of the time. 
 
