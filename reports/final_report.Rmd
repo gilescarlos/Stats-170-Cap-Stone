@@ -31,7 +31,7 @@ post_injury <- read_csv(here::here("data/post_injury.csv"))
 
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
-frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
+frame <- readPNG(here::here("data/train/labeled-data/20230112_145948/img0990.png"))
 ```
 
 
@@ -171,6 +171,17 @@ ggplot(aes(x=total_bad)) +
 ```
 
 The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different numbers of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are evenly distributed. 
+
+## Data Modeling
+
+Our main interest is to build a model that can accurately track a mouse paw as they complete the ladder beam task and capable of classifying mouse steps as good ones or bad ones. As a result, we utilize DeepLabCut for the object detection model, which is a software package for animal pose estimation that allows the training of a deep neural network using trained data. 
+
+We start by uploading the videos and then extracting the frames to be manually labeled as the training data. We design the skeleton of the mouse and manually label the mouse's body parts and rungs throughout these frames for the neural network to be trained on. Through this process we then can create the training data sets. After obtaining the training data sets, we train the network, while saving for every 100 iterations with a total of 166500 iterations. We then evaluate the trained network by computing the mean average Euclidean error between the manual labels and the ones predicted by the network. Then we can use the trained network to analyze new videos and plot the mouse steps in x and y coordinate. 
+
+We also built an ANOVA model comparing the total bad steps between the three types of mice. The Knock-out type has an average bad steps of 7.6, the Vehicle type has an average bad steps of 7.8, and the Wild type has an average bad steps of 6.1. Since the p-value is 0.543, then we can conclude that the average number of errors is not significantly different among the three types of mice after treatment. Based on the QQ-plot, we can see that there is a heavy tail, which means that there is a possible violation to the normality assumption because of the small sample size. 
+
+
+
 <<<<<<< HEAD
 
 =======
