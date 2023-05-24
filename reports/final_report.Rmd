@@ -28,10 +28,9 @@ library(gridExtra)
 
 post_injury <- read_csv(here::here("data/post_injury.csv"))
 
-
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
-frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
+frame <- readPNG(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/img0924.png"))
 ```
 
 
@@ -87,7 +86,7 @@ In order to utilize the videos provided by us, we needed an efficient tool for e
 However, the training data must then be pre-processed since the outputted format is not efficient to work with. As shown in the table below, each frame corresponds to a single row but the names for the columns need to be cleaned. In order to clean the training dataset initially produced by DLC into the table described in the Dataset section, the column names had to be changed and rows could be broken down to represent multiple body parts. First, we removed the scorer's name since it is irrelevant to the data. The columns containing the video file and the frame were given appropriate names. Then, each body part was given a correct column name. For example, bodypart1 corresponded to the front left paw of the mouse. Lastly, each individual row was transformed into four rows, one corresponding to each paw of the mouse at that specific frame. 
 
 ```{r message = FALSE, echo = FALSE}
-unclean_train_data <- read_csv(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/CollectedData_Giles.csv"))
+unclean_train_data <- read_csv(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/CollectedData_NG.csv"))
 
 kable(head(unclean_train_data[,1:5], 10),
     escape = T, caption = "Example of First 10 Rows and 5 Columns of Uncleaned Training Data from a Single Video",
@@ -115,7 +114,8 @@ When comparing the three groups of mice, we can see that on average the knock-ou
 
 ```{r echo = FALSE, warning = FALSE}
 track_paws1<- dlc_train %>% 
-  filter(frame == "img1041.png") %>% 
+  filter(frame == "img0924.png") %>% 
+  filter(bodypart %in% c("back_left_paw", "back_right_paw", "front_left_paw", "front_right_paw")) %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
@@ -123,22 +123,24 @@ track_paws1<- dlc_train %>%
   ggplot(aes(x = x, y = y, color = bodypart)) + 
   background_image(frame) +
   geom_point() +
-  ylim(1080, 0) + 
-  xlim(0, 1920) + 
+  ylim(2160, 0) + 
+  xlim(0, 3840) + 
   labs(x = "X",
        y = "Y", 
        color = "Body Part") + 
   theme(legend.position = "none")
 
 track_paws2 <- dlc_train %>% 
+  filter(bodypart %in% c("back_left_paw", "back_right_paw", "front_left_paw", "front_right_paw")) %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
                    bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+
   ggplot(aes(x = x, y = y, color = bodypart)) + 
   geom_point() +
-  ylim(1080, 0) + 
-  xlim(0, 1920) +
+  ylim(2160, 0) + 
+  xlim(0, 3840) + 
   labs(x = "X",
        y = "Y", 
        color = "Body Part") + 
@@ -159,6 +161,7 @@ ggplot(aes(x=total_good)) +
   labs(title='Distribution of Total Good Steps Across Mice Groups', x='Total Good Steps', y='Mouse Count') +
   facet_wrap(vars(type))
 ```
+
 ```{r echo=FALSE, message = FALSE}
 post_injury %>% 
   mutate(type = case_when(type == "w" ~ "Wildtype", 
