@@ -274,7 +274,7 @@ as.data.frame(cbind(script_names, descriptions)) %>%
 
 # Experiments and Evaluation
 
-### ANOVA Diagnostics
+## ANOVA Diagnostics
 
 To check the validity for our ANOVA model we performed diagnostics to see if any of the following assumptions were violated: normality, constant variance, and independence. We know from the lab that each mouse was randomly assigned and tested independently so the independence assumption is not violated. Likewise, from our exploratory data analysis we saw that the variance across the three groups was fairly similar so constant variance can be assumed. 
 
@@ -285,7 +285,7 @@ qqline(aov_mod$residuals)
 
 However, as show in the plot above, heavy tails in the QQ plot indicate there is a possible violation to the normality assumption. This may be due to the small sample size.
 
-### Neural Network
+## Neural Network
 
 Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateaued at around 0.003% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.00096% error rate with a p-value of 0.02. The run time took around _______hours to train the neural network. 
 
