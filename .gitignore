@@ -42,5 +42,6 @@ vignettes/*.pdf
 data/*
 !data/dlc_train_example_video.csv
 !data/post_injury.csv
+!data/images
 
 .DS_Store
