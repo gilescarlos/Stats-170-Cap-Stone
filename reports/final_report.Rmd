@@ -40,7 +40,7 @@ Spinal cord injury (SCI) is a debilitating condition that impacts up to 300,000 
 
 # Related Work
 
-Several other labs have encountered this bottleneck in efficiency and have aimed to address this problem as well. One such solution is DeepLabCut^[Mathis, A., Mamidanna, P., Cury, K.M. et al. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci 21, 1281–1289 (2018). https://doi.org/10.1038/s41593-018-0209-y], which is an open source software developed in Python that utilizes a deep neural network to track various body parts in multiple species across a broad collection of behaviors or physical assessments. Another study was able to utilize the software to conduct a comprehensive 3D gait analysis of mice after focal cerebral ischemia^[Weber, R.Z., Mulders, G., Kaiser, J. et al. Deep learning-based behavioral profiling of rodent stroke recovery. BMC Biol 20, 232 (2022). https://doi.org/10.1186/s12915-022-01434-9]. The authors concluded that using a previously trained data set for tracking mice movement, their own recordings of mice completing the ladder beam task, and the DeepLabCut neural network provides accurate and sensitive data to describe the complex recovery of rodents following a stroke. Other researchers have also been successful in building upon DeepLabCut and creating their own toolbox utilizing a convolutional neural network appropriate for their recording equipment^[Aljovic, A., Zhao, S., Chahin, M. et al. A deep learning-based toolbox for Automated Limb Motion Analysis (ALMA) in murine models of neurological disorders. Commun Biol 5, 131 (2022). https://doi.org/10.1038/s42003-022-03077-6].
+Several other labs have encountered this bottleneck in efficiency and have aimed to address this problem as well. One such solution is DeepLabCut^[Mathis, A., Mamidanna, P., Cury, K.M. et al. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci 21, 1281–1289 (2018). https://doi.org/10.1038/s41593-018-0209-y], which is an open source software developed in Python that utilizes a deep neural network to track various body parts in multiple species across a broad collection of behaviors or physical assessments. Another study was able to utilize the software to conduct a comprehensive 3D gait analysis of mice after focal cerebral ischemia^[Weber, R.Z., Mulders, G., Kaiser, J. et al. Deep learning-based behavioral profiling of rodent stroke recovery. BMC Biol 20, 232 (2022). https://doi.org/10.1186/s12915-022-01434-9]. The authors concluded that using a previously trained data set for tracking mice movement, their own recordings of mice completing the ladder beam task, and the DeepLabCut neural network provides accurate and sensitive data to describe the complex recovery of rodents following a stroke. Other researchers have also been successful in building upon DeepLabCut and creating their own toolbox utilizing a convolutional neural network appropriate for their recording equipment^[Aljovic, A., Zhao, S., Chahin, M. et al. A deep learning-based toolbox for Automated Limb Motion Analysis (ALMA) in murine models of neurological disorders. Commun Biol 5, 131 (2022). https://doi.org/10.1038/s42003-022-03077-6]. However, these other labs had access to several camera angles and performed analysis on other behavioral tasks besides the ladder beam task. For example, in one study a lab obtained training data from three camera angles that could be utilized by DeepLabCut, two side-views and one bottom-up view. In our case, we only have a bottom-up camera view where the obstruction of the ladder rungs can be a source of inaccuracy.
 
 # Data Sets
 
@@ -55,7 +55,9 @@ kable(head(post_injury, 10),
       caption = "Example of First 10 Rows of Manually Input Data Set Obtained from Ladder Beam Task",
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
-  row_spec(0, bold = TRUE)
+  row_spec(0, bold = TRUE) %>% 
+  column_spec(2:5, width = "4em")
+
 ```
 
 ```{r, results= FALSE, echo = FALSE}
@@ -65,14 +67,9 @@ summary(post_injury)
 str(post_injury)
 ```
 
-<<<<<<< HEAD
-The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). There are three types of mice - Wildtype, Knock-out and Vehicle. On average, each mouse has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
-=======
 The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). Total_good and Total_bad measures the quality of the steps of the mouse as it traverse through the ladder beam. Type variable indicate 1 of the 3 mouse types: wild (w), knock-out (k), and vehicle (v). Lb_score shows the overall performance of each mouse On average, each mouse has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
->>>>>>> 2147f11e9d38e314c422005cd6c8ceef4ae8aef8
 
 ```{r echo = FALSE}
-
 kable(head(dlc_train, 10),
       col.names = c("Video", "Frame", "Bodypart", "X", "Y"),
       escape = T, caption = "Example of First 10 Rows of Training Data from a Single Video",
@@ -81,15 +78,13 @@ kable(head(dlc_train, 10),
   row_spec(0, bold = TRUE)
 ```
 
-The above table corresponds to a single training data set from one video of the ladder beam task being completed. From this particular video, nineteen frames were extracted which produced a data set with `r nrow(dlc_train)` rows and `r ncol(dlc_train)` columns. Each row represents a the location of one of the mouse's paws during a particular frame from a specific video. The video column indicates what video the frames were extracted from. Likewise, the frame column indicates which particular frame the body part was being tracked. Lastly, the body part, x, and y column correspond to which paw, the x coordinate, and the y coordinate, respectively. As we obtain more videos from our collaborators we plan on having a much larger training set with multiple videos and more frames. 
+The above table corresponds to a single training data set from one video of the ladder beam task being completed. From this particular video, nineteen frames were extracted which produced a data set with `r nrow(dlc_train)` rows and `r ncol(dlc_train)` columns. Each row represents a the location of one of the mouse's paws during a particular frame from a specific video. The video column indicates what video the frames were extracted from. Likewise, the frame column indicates which particular frame the body part was being tracked. Lastly, the body part, x, and y column correspond to which paw or part of the body, the x coordinate, and the y coordinate, respectively. In total, we obtained training data sets from three separate videos. It should be noted that in each data set there are several missing values in the x and y columns indicating that a particular part of the body was blocked or obstructed by a ladder rung. Therefore, that specific body part was not able to be labeled. 
 
 # Overall Technical Approach
 
 ## Data Wrangling
 
 In order to utilize the videos provided by us, we needed an efficient tool for extracting frames in the video and labeling the location of mouse paws. We utilized DeepLabCut (DLC), an open source Python tool for developing models capable of tracking animal behavior and movement. The process for extracting our data from this tool goes as follows. First, we input a video or list of videos that we wish to obtain training data from into DLC. DLC then extracts a particular set of frames from each video according to the options we specify. Next, we individually label each frame by marking the location of each of the four mouse paws. Lastly, from those labeled frames DLC produces a training data set. 
-
-However, the training data must then be pre-processed since the outputted format is not efficient to work with. As shown in the table below, each frame corresponds to a single row but the names for the columns need to be cleaned. In order to clean the training dataset initially produced by DLC into the table described in the Dataset section, the column names had to be changed and rows could be broken down to represent multiple body parts. First, we removed the scorer's name since it is irrelevant to the data. The columns containing the video file and the frame were given appropriate names. Then, each body part was given a correct column name. For example, bodypart1 corresponded to the front left paw of the mouse. Lastly, each individual row was transformed into four rows, one corresponding to each paw of the mouse at that specific frame. 
 
 ```{r message = FALSE, echo = FALSE}
 unclean_train_data <- read_csv(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/CollectedData_NG.csv"))
@@ -101,11 +96,27 @@ kable(head(unclean_train_data[,1:5], 10),
   row_spec(0, bold = TRUE)
 ```
 
+However, the training data must then be pre-processed since the outputted format is not efficient to work with. As shown in the table above, each frame corresponds to a single row but the names for the columns need to be cleaned. In order to clean the training dataset initially produced by DLC into the table described in the Dataset section, the column names had to be changed and rows could be broken down to represent multiple body parts. First, we removed the scorer's name since it is irrelevant to the data. The columns containing the video file and the frame were given appropriate names. Then, each body part was given a correct column name. For example, FrontLeft corresponded to the front left paw of the mouse. Lastly, each individual row was transformed into four rows, one corresponding to each paw of the mouse at that specific frame. 
 
 
 ## Exploratory Data Analysis
 
 ```{r echo = FALSE}
+post_injury %>% 
+  group_by(type) %>% 
+  summarise(mean_steps = mean(ave_bad),
+            var_steps = var(ave_bad)) %>%
+  mutate(type = case_when(type == "k" ~ "Knockout",
+                          type == "v" ~ "Vehicle",
+                          type == "w" ~ "Wildtype")) %>% 
+  rename(Type = type, 
+        `Mean Bad Steps` = mean_steps,
+        `Variance Bad Steps` = var_steps) %>% 
+  kable(escape = T, 
+        caption = "Summary statistics of bad steps for each type of mouse") %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+
 post_injury %>% 
   mutate(type = case_when(type == "w" ~ "Wildtype", 
                           type == "k" ~ "Knock-out",
@@ -116,19 +127,22 @@ post_injury %>%
   theme_classic()
 ```
 
-When comparing the three groups of mice, we can see that on average the knock-out mice performed the worst while the wild type performed the best. The vehicle group and wildtype group appear to have similar variance while the knock-out group's variance is slightly higher. Based on the plot, there may be some evidence that the stem cell therapeutic helps certain groups of mice in their recovery a little more. 
+When comparing the three groups of mice, we can see that on average the knock-out mice performed the worst while the wild type performed the best. The vehicle group and wildtype group appear to have similar variance while the knock-out group's variance is slightly higher. Based on the plot and table above, there may be some evidence that the stem cell therapeutic helps certain groups of mice in their recovery a little more. 
 
 ```{r echo = FALSE, warning = FALSE}
 track_paws1<- dlc_train %>% 
   filter(frame == "img0924.png") %>% 
-  filter(bodypart %in% c("back_left_paw", "back_right_paw", "front_left_paw", "front_right_paw")) %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
-                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+                   bodypart == "front_right_paw" ~ "Front Right Paw",
+                   bodypart == "nose" ~ "Nose",
+                   bodypart == "tail" ~ "Tail", 
+                   bodypart == "front_mid" ~ "Front Middle",
+                   bodypart == "back_mid" ~ "Back Middle")) %>% 
   ggplot(aes(x = x, y = y, color = bodypart)) + 
   background_image(frame) +
-  geom_point() +
+  geom_point(size = 1.5) +
   ylim(3840, 0) + 
   xlim(0, 2160) +  
   labs(x = "X",
@@ -156,7 +170,7 @@ track_paws2 <- dlc_train %>%
 grid.arrange(track_paws1, track_paws2, ncol = 2)
 ```
 
-The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were not done with a stationary camera so although the mouse may have been moving forward, during the frames it may appear that the mouse is not moving that much. 
+The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. Although there are only four paws, four additional points were labeled on the mouse to better track the skeletal structure. Specifically, the nose, tail, middle point between the front paws, and middle point between the back paws were labeled. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were done with a stationary camera so the mouse was moving forward for the most part, but there may be instances in the video where the mouse backtracks.
 
 ```{r echo=FALSE, message = FALSE}
 post_injury %>%
@@ -192,8 +206,7 @@ post_injury %>%
   facet_wrap(vars(type))
 ```
 
-<<<<<<< HEAD
-The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different numbers of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are evenly distributed. 
+The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different density of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are differently distributed. 
 
 ## Data Modeling
 
@@ -201,25 +214,36 @@ Our main interest is to build a model that can accurately track a mouse paw as t
 
 We start by uploading the videos and then extracting the frames to be manually labeled as the training data. We design the skeleton of the mouse and manually label the mouse's body parts and rungs throughout these frames for the neural network to be trained on. Through this process we then can create the training data sets. After obtaining the training data sets, we train the network, while saving for every 100 iterations with a total of 166500 iterations. We then evaluate the trained network by computing the mean average Euclidean error between the manual labels and the ones predicted by the network. Then we can use the trained network to analyze new videos and plot the mouse steps in x and y coordinate. 
 
-We also built an ANOVA model comparing the total bad steps between the three types of mice. The Knock-out type has an average bad steps of 7.6, the Vehicle type has an average bad steps of 7.8, and the Wild type has an average bad steps of 6.1. Since the p-value is 0.543, then we can conclude that the average number of errors is not significantly different among the three types of mice after treatment. Based on the QQ-plot, we can see that there is a heavy tail, which means that there is a possible violation to the normality assumption because of the small sample size. 
+```{r echo = FALSE}
+aov_mod <- aov(total_bad ~ type, data = post_injury)
+aov_sum <- summary(aov_mod)[[1]]
+rownames(aov_sum) <- c("Type", "Residual")
+colnames(aov_sum) <- c("DF", "Sum Squared Error", "Mean Squared Error", "F-Value", "Pr(> F)")
+
+kable(aov_sum,
+      escape = T, 
+      caption = "ANOVA Model Summary",
+      align = 'l') %>% 
+  kable_styling(latex_options = "HOLD_position") %>% 
+  row_spec(0, bold = TRUE)
+```
 
 
-
-=======
-The above two graphs show the distribution of the total good and bad steps across the mice groups. According to the graphs, almost every mouse having different density of total good and bad steps. The Vehicle type has less good steps compared to the Wildtype, and more bad steps compared to the Wildtype. Overall, the total good steps and bad steps across mice groups are differently distributed. 
->>>>>>> 6c6ce8d3e481402dda06d4269fe36f877b710ca9
-<<<<<<< HEAD
-
-=======
->>>>>>> 2147f11e9d38e314c422005cd6c8ceef4ae8aef8
+We also built an ANOVA model comparing the total bad steps between the three types of mice. The Knock-out type has an average bad steps of 7.6, the Vehicle type has an average bad steps of 7.8, and the Wild type has an average bad steps of 6.1. The table above shows that at a significance level of 0.05 and with a p-value of 0.543, we can conclude that the average number of errors is not significantly different among the three types of mice after treatment. 
 
 # Software
 
-Self-written software used for this project:
+Self-written software used for this project, in order of use:
 
-```{r}
-script_names <- c("cleaning_extracting.Rmd", "anova_model.Rmd", "eda.Rmd", "dlc_model.ipynb")
-descriptions <- c("A script to clean and transform data for appropriate analysis", "A script for creating visualizations and statistical analyses (ANOVA) on two datasets ('post_injury' and 'raw_post_injury') to understand the differences in specific variables across different 'type' groups in the two datasets", "An exploratory data analysis (EDA) script for visualizing ladder beam performance and tracking individual paws throughout a single video", "A data analysis notebook to train model using DeepLabCut to create labeled video")
+```{r echo = FALSE}
+script_names <- c("cleaning_extracting.Rmd", 
+                  "eda.Rmd", 
+                  "anova_model.Rmd", 
+                  "dlc_model.ipynb")
+descriptions <- c("A script to clean and transform data for appropriate analysis", 
+                  "An exploratory data analysis (EDA) script for visualizing ladder beam performance and tracking individual paws throughout a single video",
+                  "A script for creating visualizations and statistical analyses (ANOVA) on two datasets ('post_injury' and 'raw_post_injury') to understand the differences in specific variables across different 'type' groups in the two datasets",  
+                  "A data analysis notebook to train model using DeepLabCut to create labeled video")
 
 as.data.frame(cbind(script_names, descriptions)) %>% 
   rename(Scripts = script_names,
@@ -228,12 +252,13 @@ as.data.frame(cbind(script_names, descriptions)) %>%
         caption = "",
         align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
-  row_spec(0, bold = TRUE)
+  row_spec(0, bold = TRUE) %>% 
+  column_spec(2, width = "30em")
 ```
 
 Third-party software and libraries used:
 
-```{r}
+```{r echo = FALSE}
 script_names <- c("DeepLabCut (DLC)", "TensorFlow")
 descriptions <- c("A software package for animal pose estimation using deep neural networks", "A Python library for machine learning, mainly on deep neural networks")
 
@@ -248,6 +273,20 @@ as.data.frame(cbind(script_names, descriptions)) %>%
 ```
 
 # Experiments and Evaluation
+
+### ANOVA Diagnostics
+
+To check the validity for our ANOVA model we performed diagnostics to see if any of the following assumptions were violated: normality, constant variance, and independence. We know from the lab that each mouse was randomly assigned and tested independently so the independence assumption is not violated. Likewise, from our exploratory data analysis we saw that the variance across the three groups was fairly similar so constant variance can be assumed. 
+
+```{r echo = FALSE}
+qqnorm(aov_mod$residuals)
+qqline(aov_mod$residuals)
+```
+
+However, as show in the plot above, heavy tails in the QQ plot indicate there is a possible violation to the normality assumption. This may be due to the small sample size.
+
+### Neural Network
+
 Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateaued at around 0.003% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.00096% error rate with a p-value of 0.02. The run time took around _______hours to train the neural network. 
 
 After that, we were able to use DLC to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeleton structure, body parts coordinates each frame, likelihood of each body part per frame, and the delta x and delta y count by body part. 
@@ -277,13 +316,17 @@ Test error with p-cutoff:	17.35
 # Members Participation
 
 ```{r echo = FALSE}
-covariates <- c("task 1")
+covariates <- c("Data Wrangling and Cleaning",
+                "Exploratory Data Analysis",
+                "ANOVA Modeling",
+                "DLC Neural Net Modeling",
+                "Report and Presentation Writing")
 
-giles <- c("100%")
-nathan <- c("100%")
-alex <- c("100%")
-vinh <- c("100%")
-owen <- c("100%")
+giles <- c("100%", "0", "0", "0", "0")
+nathan <- c("100%", "0", "0", "0", "0")
+alex <- c("100%", "0", "0", "0", "0")
+vinh <- c("100%", "0", "0", "0", "0")
+owen <- c("100%", "0", "0", "0", "0")
 
 workload_summary <- data.frame(covariates,
                                linebreak(giles),
@@ -299,7 +342,8 @@ kable(workload_summary,
       caption = "Percentage of workload across group members",
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
-  row_spec(0, bold = TRUE)
+  row_spec(0, bold = TRUE) 
+# %>% column_spec(2, width = "30em")
 ```
 
 
