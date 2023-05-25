@@ -300,10 +300,10 @@ likelihood <- readPNG(here::here("data/images/145948_plots/plot-likelihood.png")
 xyplot <- readPNG(here::here("data/images/145948_plots/trajectory.png"))
 xytime <- readPNG(here::here("data/images/145948_plots/plot.png"))
 
-grid.arrange(rasterGrob(histogram),
-             rasterGrob(likelihood),
-             rasterGrob(xyplot),
+grid.arrange(rasterGrob(xyplot),
              rasterGrob(xytime),
+             rasterGrob(likelihood),
+             rasterGrob(histogram),
              ncol = 2)
 grid.text("A)", x = unit(0.05, "npc"), y = unit(0.97, "npc"), draw = TRUE)
 grid.text("B)", x = unit(0.55, "npc"), y = unit(0.97, "npc"), draw = TRUE)
@@ -311,7 +311,7 @@ grid.text("C)", x = unit(0.05, "npc"), y = unit(0.52, "npc"), draw = TRUE)
 grid.text("D)", x = unit(0.55, "npc"), y = unit(0.52, "npc"), draw = TRUE)
 ```
 
-We were then able to use DeepLabCut to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeletal structure, skeletal structure coordinates each frame, likelihood of each body part in the skeletal structure per frame, and the count of delta x and delta y by body part. 
+We were then able to use DeepLabCut to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeletal structure (A), skeletal structure coordinates each frame (B), likelihood of each body part in the skeletal structure each frame (C), and a histogram for the counts of delta x and delta y by body part (D). 
 
 The x and y coordinate plots versus time plot should be continuous, but because of the obstructions, it became dotted points which shows the difficulty the neural network had in identifying the body parts as it moved across the ladder beams. 
 
