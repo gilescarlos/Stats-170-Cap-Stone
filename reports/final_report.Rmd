@@ -332,11 +332,11 @@ covariates <- c("Data Wrangling and Cleaning",
                 "DLC Neural Net Modeling",
                 "Report and Presentation Writing")
 
-giles <- c("100%", "0", "0", "0", "0")
-nathan <- c("100%", "0", "0", "0", "0")
-alex <- c("100%", "0", "0", "0", "0")
-vinh <- c("100%", "0", "0", "0", "0")
-owen <- c("100%", "0", "0", "0", "0")
+giles <- c("50%", "25%", "20%", "50%", "25%")
+nathan <- c("50%", "25%", "20%", "50%", "25%")
+alex <- c("0%", "25%", "30%", "0%", "20%")
+vinh <- c("0%", "0%", "0%", "0%", "10%")
+owen <- c("0%", "25%", "30%", "0%", "20%")
 
 workload_summary <- data.frame(covariates,
                                linebreak(giles),
