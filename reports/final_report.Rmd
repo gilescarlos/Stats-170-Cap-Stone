@@ -226,10 +226,13 @@ kable(aov_sum,
       align = 'l') %>% 
   kable_styling(latex_options = "HOLD_position") %>% 
   row_spec(0, bold = TRUE)
+
+kruskal_mod <- kruskal.test(total_bad ~ type, data = post_injury)
+kruskal_mod
 ```
 
 
-We also built an ANOVA model comparing the total bad steps between the three types of mice. The Knock-out type has an average bad steps of 7.6, the Vehicle type has an average bad steps of 7.8, and the Wild type has an average bad steps of 6.1. The table above shows that at a significance level of 0.05 and with a p-value of 0.543, we can conclude that the average number of errors is not significantly different among the three types of mice after treatment. 
+We also built an ANOVA model comparing the total bad steps between the three types of mice. The Knock-out type has an average bad steps of 7.6, the Vehicle type has an average bad steps of 7.8, and the Wild type has an average bad steps of 6.1. The table above shows that at a significance level of 0.05 and with a p-value of 0.543, we can conclude that the average number of errors is not significantly different among the three types of mice after treatment. Diagnostics for the ANOVA model were performed which are discussed in the Experiments and Evaluation section below. We found that there is a possible violation to the normality assumption. Consequently, we ran a Kruskal-Wallis test to account for this. We concluded that the median number of errors is not significantly different among the three types of mice after treatment [p-value = 0.402].
 
 # Software
 
