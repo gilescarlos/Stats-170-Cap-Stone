@@ -42,39 +42,50 @@ post_injury %>%
 library(ggpubr)
 library(jpeg)
 library(png)
+library(gridExtra)
 
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
-frame <- readPNG(here::here("data/train/DLC Example Train Data-Giles-2023-04-26/labeled-data/MVI_8324/img1041.png"))
+frame <- readPNG(here::here("data/images/img0924.png"))
 
-dlc_train %>% 
-  filter(frame == "img1041.png") %>% 
+track_paws1<- dlc_train %>% 
+  filter(frame == "img0924.png") %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
-                   bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+                   bodypart == "front_right_paw" ~ "Front Right Paw",
+                   bodypart == "nose" ~ "Nose",
+                   bodypart == "tail" ~ "Tail", 
+                   bodypart == "front_mid" ~ "Front Middle",
+                   bodypart == "back_mid" ~ "Back Middle")) %>% 
   ggplot(aes(x = x, y = y, color = bodypart)) + 
   background_image(frame) +
-  geom_point() +
-  ylim(1080, 0) + 
-  xlim(0, 1920) + 
+  geom_point(size = 1.5) +
+  ylim(3840, 0) + 
+  xlim(0, 2160) +  
   labs(x = "X",
        y = "Y", 
-       color = "Body Part")
+       color = "Body Part") + 
+  theme(legend.position = "none")
 
-dlc_train %>% 
+track_paws2 <- dlc_train %>% 
+  filter(bodypart %in% c("back_left_paw", "back_right_paw", "front_left_paw", "front_right_paw")) %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
                    bodypart == "back_right_paw" ~ "Back Right Paw",
                    bodypart == "front_left_paw" ~ "Front Left Paw",
                    bodypart == "front_right_paw" ~ "Front Right Paw")) %>% 
+
   ggplot(aes(x = x, y = y, color = bodypart)) + 
   geom_point() +
-  ylim(1080, 0) + 
-  xlim(0, 1920) +
+  ylim(3840, 0) + 
+  xlim(0, 2160) + 
   labs(x = "X",
        y = "Y", 
-       color = "Body Part",
-       title = "Tracking Individual Paws Throughout a Single Video")
+       color = "Body Part") + 
+  theme(legend.position = c(0.25, 0.875),
+        legend.key.size = unit(0.25, 'cm'))
+
+grid.arrange(track_paws1, track_paws2, ncol = 2)
 ```
 
 

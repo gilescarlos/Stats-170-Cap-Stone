@@ -9,12 +9,33 @@ This project is in collaboration with the Stem Cell Research Center at the UCI S
 
 ### Running the Project
 
-To run the project take the following steps: 
+Run in terminal: "git clone https://github.com/gilescarlos/Stats-170-Cap-Stone.git"
 
-1. 
-2. 
-3.
-4. 
+The project follows two separate pipelines: 
+
+__A. ANOVA and Kruskal-Wallis__
+
+1. Open and run cleaning_extracting.Rmd
+2. Open and run eda.Rmd
+3. Open and run anova_model.Rmd
+
+__B. CNN using DeepLabCut__
+
+1. Open and run dlc_model.ipynb
+
+Notes: 
+
+- steps provided at https://deeplabcut.github.io/DeepLabCut/docs/installation.html are a point of reference
+- anaconda and pip should be installed on your computer
+- then execute the following commands one by one: 
+  - conda create -n DLC python==3.8
+  - conda activate DLC
+  - conda install -c conda-forge cudatoolkit==11.7.0 cudnn==8.4.1.50
+  - pip install tensorflow==2.10.0
+  - pip install deeplabcut==2.2.3
+  - pip install ipython
+  - pip install -U wxPython
+- if running in Visual Studio Code, ensure kernel is "DLC"
 
 All file descriptions are provided below. 
 

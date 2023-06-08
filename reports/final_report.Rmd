@@ -30,7 +30,7 @@ post_injury <- read_csv(here::here("data/post_injury.csv"))
 
 dlc_train <- read_csv(here::here("data/dlc_train_example_video.csv"))
 
-frame <- readPNG(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/img0924.png"))
+frame <- readPNG(here::here("data/images/img0924.png"))
 ```
 
 
@@ -87,7 +87,7 @@ The above table corresponds to a single training data set from one video of the 
 In order to utilize the videos provided by us, we needed an efficient tool for extracting frames in the video and labeling the location of mouse paws. We utilized DeepLabCut (DLC), an open source Python tool for developing models capable of tracking animal behavior and movement. The process for extracting our data from this tool goes as follows. First, we input a video or list of videos that we wish to obtain training data from into DLC. DLC then extracts a particular set of frames from each video according to the options we specify. Next, we individually label each frame by marking the location of each of the four mouse paws. Lastly, from those labeled frames DLC produces a training data set. 
 
 ```{r message = FALSE, echo = FALSE}
-unclean_train_data <- read_csv(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/CollectedData_NG.csv"))
+unclean_train_data <- read_csv(here::here("data/DLC_example_raw.csv"))
 
 kable(head(unclean_train_data[,1:5], 10),
     escape = T, caption = "Example of First 10 Rows and 5 Columns of Uncleaned Training Data from a Single Video",

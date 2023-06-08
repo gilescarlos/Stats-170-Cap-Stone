@@ -51,7 +51,7 @@ write_csv(post_injury, here::here("data/post_injury.csv"))
 
 ```{r}
 # Accessing sheet names of the post-injury excel file
-sheet <- excel_sheets(here::here("A111.1 Ladder Beam Post-Injury.xls"))
+sheet <- excel_sheets(here::here("data/A111.1 Ladder Beam Post-Injury.xls"))
 sheet <- sheet[-1] # removing summary sheet
   
 # Function that extracts information on right and left bad steps for all three trials for all mice
@@ -78,7 +78,7 @@ extract_sheet <- function(f, sht) {
 
 # create list of data frames, one for each mouse
 list_data_frame <- lapply(setNames(sheet, sheet), 
-                     function(x) extract_sheet(here::here("A111.1 Ladder Beam Post-Injury.xls"), sht = x))
+                     function(x) extract_sheet(here::here("data/A111.1 Ladder Beam Post-Injury.xls"), sht = x))
 
 # combine data frames into one
 raw_post_injury <- bind_rows(list_data_frame)
@@ -98,7 +98,7 @@ write_csv(raw_post_injury, here::here("data/raw_post_injury.csv"))
 # Training Data from DLC
 
 ```{r}
-dlc_train <- read_csv(here::here("data/train/UCI_HD_Label-NG-2023-05-19/labeled-data/20230112_145948/CollectedData_NG.csv"),
+dlc_train <- read_csv(here::here("data/DLC_example_raw.csv"),
                       col_names = TRUE,
                       skip = 1) 
 dlc_train <- dlc_train[,-1]

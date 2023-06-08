@@ -380,13 +380,36 @@ task. Eventually, we would build upon this and create a model capable of
 classifying and mouse steps as good ones or bad ones.</p>
 <div id="running-the-project" class="section level3">
 <h3>Running the Project</h3>
-<p>To run the project take the following steps:</p>
+<p>Run in terminal: “git clone <a href="https://github.com/gilescarlos/Stats-170-Cap-Stone.git" class="uri">https://github.com/gilescarlos/Stats-170-Cap-Stone.git</a>”</p>
+<p>The project follows two separate pipelines:</p>
+<p><strong>A. ANOVA and Kruskal-Wallis</strong></p>
 <ol style="list-style-type: decimal">
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li>Open and run cleaning_extracting.Rmd</li>
+<li>Open and run eda.Rmd</li>
+<li>Open and run anova_model.Rmd</li>
 </ol>
+<p><strong>B. CNN using DeepLabCut</strong></p>
+<ol style="list-style-type: decimal">
+<li>Open and run dlc_model.ipynb</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li>steps provided at <a href="https://deeplabcut.github.io/DeepLabCut/docs/installation.html" class="uri">https://deeplabcut.github.io/DeepLabCut/docs/installation.html</a>
+are a point of reference</li>
+<li>anaconda and pip should be installed on your computer</li>
+<li>then execute the following commands one by one:
+<ul>
+<li>conda create -n DLC python==3.8</li>
+<li>conda activate DLC</li>
+<li>conda install -c conda-forge cudatoolkit==11.7.0
+cudnn==8.4.1.50</li>
+<li>pip install tensorflow==2.10.0</li>
+<li>pip install deeplabcut==2.2.3</li>
+<li>pip install ipython</li>
+<li>pip install -U wxPython</li>
+</ul></li>
+<li>if running in Visual Studio Code, ensure kernel is “DLC”</li>
+</ul>
 <p>All file descriptions are provided below.</p>
 </div>
 </div>
