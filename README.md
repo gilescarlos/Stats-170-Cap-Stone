@@ -36,6 +36,7 @@ Notes:
   - pip install ipython
   - pip install -U wxPython
 - if running in Visual Studio Code, ensure kernel is "DLC"
+- skip the code block underneath "Train Network (Model)" since this is computationally intensive
 
 All file descriptions are provided below. 
 

@@ -10,8 +10,14 @@ date: "Github Repository: https://github.com/gilescarlos/Stats-170-Cap-Stone"
 output:
   pdf_document: 
     number_sections: true
+    latex_engine: xelatex
+    extra_dependencies: xcolor
   html_document:
     number_sections: true
+header-includes:
+   - \usepackage{soul}
+   - \usepackage{color}
+
 ---
 
 ```{r echo = FALSE, include = FALSE}
@@ -69,6 +75,8 @@ str(post_injury)
 
 The post_injury data set has `r n_row` rows and `r n_col` columns where each column represents a single variable. The animal and type variables are categorical (nominal) and the rest of the variables are numerical (discrete). Total_good and Total_bad measures the quality of the steps of the mouse as it traverse through the ladder beam. Type variable indicate 1 of the 3 mouse types: wild (w), knock-out (k), and vehicle (v). Lb_score shows the overall performance of each mouse On average, each mouse has 42.83 good steps and 7.15 bad steps. The mean lb score of the mice is 85.69, with a lowest of 72.33 and a highest of 97.00. The highest total good steps the mouse has is 291 and the lowest is 217 good steps. While for the bad steps, the highest is 83 and the lowest is 9 bad steps.
 
+Table 2 corresponds to a single training data set from one video of the ladder beam task being completed. From this particular video, nineteen frames were extracted which produced a data set with `r nrow(dlc_train)` rows and `r ncol(dlc_train)` columns. Each row represents a the location of one of the mouse's paws during a particular frame from a specific video. The video column indicates what video the frames were extracted from. Likewise, the frame column indicates which particular frame the body part was being tracked. Lastly, the body part, x, and y column correspond to which paw or part of the body, the x coordinate, and the y coordinate, respectively. In total, we obtained training data sets from three separate videos. It should be noted that in each data set there are several missing values in the x and y columns indicating that a particular part of the body was blocked or obstructed by a ladder rung. Therefore, that specific body part was not able to be labeled. 
+
 ```{r echo = FALSE}
 kable(head(dlc_train, 10),
       col.names = c("Video", "Frame", "Bodypart", "X", "Y"),
@@ -78,7 +86,6 @@ kable(head(dlc_train, 10),
   row_spec(0, bold = TRUE)
 ```
 
-The above table corresponds to a single training data set from one video of the ladder beam task being completed. From this particular video, nineteen frames were extracted which produced a data set with `r nrow(dlc_train)` rows and `r ncol(dlc_train)` columns. Each row represents a the location of one of the mouse's paws during a particular frame from a specific video. The video column indicates what video the frames were extracted from. Likewise, the frame column indicates which particular frame the body part was being tracked. Lastly, the body part, x, and y column correspond to which paw or part of the body, the x coordinate, and the y coordinate, respectively. In total, we obtained training data sets from three separate videos. It should be noted that in each data set there are several missing values in the x and y columns indicating that a particular part of the body was blocked or obstructed by a ladder rung. Therefore, that specific body part was not able to be labeled. 
 
 # Overall Technical Approach
 
@@ -101,7 +108,7 @@ However, the training data must then be pre-processed since the outputted format
 
 ## Exploratory Data Analysis
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.height = 4, fig.width = 6, fig.align='center'}
 post_injury %>% 
   group_by(type) %>% 
   summarise(mean_steps = mean(ave_bad),
@@ -172,7 +179,7 @@ grid.arrange(track_paws1, track_paws2, ncol = 2)
 
 The two plots above, describe how the paws are tracked in a video and the general behavior of each paw. The first plot, indicates that we are tracking each paw by emphasizing the location of the toes. Although there are only four paws, four additional points were labeled on the mouse to better track the skeletal structure. Specifically, the nose, tail, middle point between the front paws, and middle point between the back paws were labeled. The second plot describes the natural behavior one would expect for the paws of a mouse. That is, the front paws remain in front of the back paws for majority of the video. It must be noted that the recordings were done with a stationary camera so the mouse was moving forward for the most part, but there may be instances in the video where the mouse backtracks.
 
-```{r echo=FALSE, message = FALSE}
+```{r echo=FALSE, message = FALSE, fig.height = 3}
 post_injury %>%
   mutate(type = case_when(
     type == "w" ~ "Wildtype",
@@ -189,7 +196,7 @@ post_injury %>%
   facet_wrap(vars(type))
 ```
 
-```{r echo=FALSE, message = FALSE}
+```{r echo=FALSE, message = FALSE, fig.height = 3}
 post_injury %>%
   mutate(type = case_when(
     type == "w" ~ "Wildtype",
@@ -228,7 +235,6 @@ kable(aov_sum,
   row_spec(0, bold = TRUE)
 
 kruskal_mod <- kruskal.test(total_bad ~ type, data = post_injury)
-kruskal_mod
 ```
 
 
@@ -281,16 +287,18 @@ as.data.frame(cbind(script_names, descriptions)) %>%
 
 To check the validity for our ANOVA model we performed diagnostics to see if any of the following assumptions were violated: normality, constant variance, and independence. We know from the lab that each mouse was randomly assigned and tested independently so the independence assumption is not violated. Likewise, from our exploratory data analysis we saw that the variance across the three groups was fairly similar so constant variance can be assumed. 
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.align='center', fig.height = 4, fig.width = 6}
 qqnorm(aov_mod$residuals)
 qqline(aov_mod$residuals)
 ```
 
-However, as show in the plot above, heavy tails in the QQ plot indicate there is a possible violation to the normality assumption. This may be due to the small sample size.
+However, as show in the plot above, heavy tails in the QQ plot indicate there is a possible violation to the normality assumption. This may be due to the small sample size. \hl{In this case, a non-parametric test may be a more powerful test. Consequently, we chose to conduct a Kruskal-Wallis test to compare the median number of errors across the three types of mice.}
 
 ## Neural Network
 
-Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateaued at around 0.3% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.096% error rate with a p-value of 0.02. The run time took around 16 hours to train the neural network. The training error came out to be 105.05 pixels and the testing error came out to be 44.17 pixels. However, with a p-value of 0.6 both training and testing had an error rate of around 17 pixels. The video dimensions were 3840 by 2160 pixels.
+Through the initial iterations of training the deep neural network, DeepLabCut reported 10 iterations with an error rate of 34.955% based on a p-value of 0.005 where it plateaued at around 0.3% error rate after 10,000 iterations. After running it for 166,570 iterations, it ended at 0.096% error rate with a p-value of 0.02. The run time took around 16 hours to train the neural network. The training error came out to be 105.05 pixels and the testing error came out to be 44.17 pixels. However, with a p-value of 0.6 both training and testing had an error rate of around 17 pixels. \hl{Performance is measured by computing the mean average Euclidean error between the manual labels and the ones predicted by the neural network.} The video dimensions were 3840 by 2160 pixels.
+
+We were then able to use DeepLabCut to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeletal structure (A), skeletal structure coordinates each frame (B), likelihood of each body part in the skeletal structure each frame (C), and a histogram for the counts of delta x and delta y by body part (D). 
 
 ```{r echo = FALSE, message = FALSE, fig.height = 5.75}
 library(png)
@@ -314,7 +322,6 @@ grid.text("C)", x = unit(0.05, "npc"), y = unit(0.47, "npc"), draw = TRUE)
 grid.text("D)", x = unit(0.55, "npc"), y = unit(0.47, "npc"), draw = TRUE)
 ```
 
-We were then able to use DeepLabCut to create plots to analyze the accuracy of the trained neural network on the videos we created. From this it outputted CSV files and plots which showed the x versus y coordinates of the skeletal structure (A), skeletal structure coordinates each frame (B), likelihood of each body part in the skeletal structure each frame (C), and a histogram for the counts of delta x and delta y by body part (D). 
 
 The x and y coordinate plots versus time plot should be continuous, but because of the obstructions, it became dotted points which shows the difficulty the neural network had in identifying the body parts as it moved across the ladder beams. 
 
@@ -325,6 +332,10 @@ The histogram of each body parts delta x and y shows the difference in pixel dis
 The videos were able to accurately track the body parts a majority of the time but the obstructions from the ladder beams made it impossible to track all parts of the mouse the entire time. Additionally, although the videos were taken in higher quality and from a mounted camera, the distance from the mouse made it difficult to manually label let alone for the neural network to process. This is why there are gaps in the data and rarely times where it detects the entire skeleton of the mouse at once. Looking frame by frame, you can see that it struggles to label all the parts with high confidence and often is unsure of whether the whiter parts of the body are the nose or a paw and where the middle, black parts of the body are due to these same reasons. However, the video shows accuracy when it does detect the body part in frame. 
 
 # Notebook Description
+
+The models used for comparing the average number of missteps amongst the three types of mice were developed in the anova_model.Rmd file. The file contains all the major components we used to do the comparisons. First, we load in the cleaned summary sheet data produced by the R markdown file for cleaning. Then we built the ANOVA model and checked the diagnostics. Upon analyzing the diagnostics, we then conducted a Kruskal-Wallis test. 
+
+We also included dlc_model.ipynb because this Jupyter notebook contains all the code we used to create labeled data sets, train the network, and evaluate the network. The notebook starts by instructing how to download all the dependencies and set up an appropriate environment. From there, the subsequent code blocks show detailed steps in how the model was developed. 
 
 # Members Participation
 
@@ -364,17 +375,21 @@ kable(workload_summary,
 
 *What did you learn about the methods and algorithms you worked with? What did you learn about their strengths? And their limitations?*
 
-> In our project, we worked with DeepLabCut, a deep learning-based software for tracking body parts in videos. We found that DeepLabCut has significant strengths in accurately and efficiently tracking the movement of mice during the ladder beam task.However, collecting and annotating a large dataset can be time-consuming and labor-intensive. 
+> In our project, we worked with DeepLabCut, a deep learning-based software for tracking body parts in videos. We found that DeepLabCut has significant strengths in accurately and efficiently tracking the movement of mice during the ladder beam task even with a relatively small training data set. However, collecting and annotating a large dataset can be time-consuming and labor-intensive. Furthermore, we found that the obstructions in the video made the model lose track of certain bodyparts of each mouse. Lastly, training such a large neural network requires a lot of computational power. 
 
 *What ended up being harder than you expected in your project? What was surprising about your project?*
 
-> A surprising aspect of the project was the complexity of the mouse movements captured in the ladder beam task videos. The variability in step patterns, paw placements, and subtle differences in behavior among mice posed challenges in accurately tracking and analyzing the data.
+> A surprising aspect of the project was the complexity of the mouse movements captured in the ladder beam task videos. The variability in step patterns, paw placements, and subtle differences in behavior among mice posed challenges in accurately tracking and analyzing the data. Some videos had the ladder on the left side rather than the right side of the frame. In some cases mice would get stuck in the middle and not complete the whole task. These all ended up being difficulties for the model. 
 
 *What other lessons did you learn, expected or unexpected (e.g., perhaps about the tools you used, if you used anything out of the ordinary?*
 
-> test text
+> One unexpected lesson we learned is the amount of time it requires to set up appropriate environments and download necessary dependencies to get software to run. In many cases throughout the project, what seemed to be simple tasks or installations ended up requiring several hours of troubleshooting and debugging. Also, it was interesting to see how small obstructions greatly hinder the performance of our CNN. 
 
 *If you were in charge of a research lab, what ideas and directions might you invest in over the next year or two to try to make major progress on this problem? Feel free to be speculative in discussing possible future directions.*
 
-> In the future, we would film the mouse doing the ladder beam test in a more standarized way rather than hand filming. Ultimately, setting up a better working environment for pose estimation in the videos.
+> In the future, we would film the mouse doing the ladder beam test in a more standarized way. Specifically, we would try to obtain videos with side angles as well so we have more points to track the structure of each mouse. Ultimately this would set up a better working environment for pose estimation in the videos. We could also leverage RCIC’s GPUs to increase training speed of our CNN. After building an accurate tracking model then we could transition into building a model capable of classifying bad steps and good steps. Lastly, we could use longitudinal data to analyze the trend in missteps over time. This would allow us to compare the rate of recovery between the different types of mice rather than analyzing data from a single week post-injury.
+
+
+
+
  
