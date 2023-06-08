@@ -64,9 +64,7 @@ All file descriptions are provided below.
 - training-datasets: 
 - config.yaml: hyperparameters 
 
-### 
-
-### (E) Data: contains all summary data provided by our collaborators
+### (E) data: contains all summary data provided by our collaborators
 
 __post_injury.csv: Cleaned Post Injury csv file:__
 
@@ -81,5 +79,12 @@ __post_injury.csv: Cleaned Post Injury csv file:__
   - Average Bad: The average number of bad (missteps) steps across the mouse's three runs
   - LB Score: The mouse's overall score out of 100
   - Type: The group the mouse belongs to (Wild, CD44 Knock-out, Vehicle)
+  
+### (F) reports: 
+
+- final_report.Rmd: R markdown file used to generate our final report
+- anova_model.Rmd: R markdown file containing code for ANOVA and Kruskal-Wallis Test
+- dlc_model.ipynb: Jupyter notebook containing code for CNN
+
 
 ## Conclusion: 

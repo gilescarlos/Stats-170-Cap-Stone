@@ -409,6 +409,8 @@ cudnn==8.4.1.50</li>
 <li>pip install -U wxPython</li>
 </ul></li>
 <li>if running in Visual Studio Code, ensure kernel is “DLC”</li>
+<li>skip the code block underneath “Train Network (Model)” since this is
+computationally intensive</li>
 </ul>
 <p>All file descriptions are provided below.</p>
 </div>
@@ -451,11 +453,8 @@ and models to run the CNN from DeepLabCut</h3>
 <li>config.yaml: hyperparameters</li>
 </ul>
 </div>
-<div id="section" class="section level3">
-<h3></h3>
-</div>
 <div id="e-data-contains-all-summary-data-provided-by-our-collaborators" class="section level3">
-<h3>(E) Data: contains all summary data provided by our
+<h3>(E) data: contains all summary data provided by our
 collaborators</h3>
 <p><strong>post_injury.csv: Cleaned Post Injury csv file:</strong></p>
 <ul>
@@ -478,6 +477,16 @@ mouse’s three runs</li>
 <li>Type: The group the mouse belongs to (Wild, CD44 Knock-out,
 Vehicle)</li>
 </ul></li>
+</ul>
+</div>
+<div id="f-reports" class="section level3">
+<h3>(F) reports:</h3>
+<ul>
+<li>final_report.Rmd: R markdown file used to generate our final
+report</li>
+<li>anova_model.Rmd: R markdown file containing code for ANOVA and
+Kruskal-Wallis Test</li>
+<li>dlc_model.ipynb: Jupyter notebook containing code for CNN</li>
 </ul>
 </div>
 </div>
