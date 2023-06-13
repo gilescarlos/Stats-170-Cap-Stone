@@ -108,7 +108,7 @@ However, the training data must then be pre-processed since the outputted format
 
 ## Exploratory Data Analysis
 
-```{r echo = FALSE, fig.height = 4, fig.width = 6, fig.align='center'}
+```{r echo = FALSE, fig.height = 3, fig.width = 6, fig.align='center'}
 post_injury %>% 
   group_by(type) %>% 
   summarise(mean_steps = mean(ave_bad),
@@ -136,7 +136,7 @@ post_injury %>%
 
 When comparing the three groups of mice, we can see that on average the knock-out mice performed the worst while the wild type performed the best. The vehicle group and wildtype group appear to have similar variance while the knock-out group's variance is slightly higher. Based on the plot and table above, there may be some evidence that the stem cell therapeutic helps certain groups of mice in their recovery a little more. 
 
-```{r echo = FALSE, warning = FALSE}
+```{r echo = FALSE, warning = FALSE, fig.height = 3.5}
 track_paws1<- dlc_train %>% 
   filter(frame == "img0924.png") %>% 
   mutate(bodypart = case_when(bodypart == "back_left_paw" ~ "Back Left Paw",
