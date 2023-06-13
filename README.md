@@ -50,19 +50,20 @@ All file descriptions are provided below.
 
 ### (B) wrangling: contains the files necessary to clean summary sheet data
 
-- cleaning_extracting.Rmd: 
+- cleaning_extracting.Rmd: R markdown file for cleaning and extracting summary sheet data from excel file provided by our sponsors. 
 
 ### (C) eda: contains the files necessary to explore the data
 
-- eda.Rmd: 
+- eda.Rmd: R markdown file containing code used for exploratory data analysis and creating plots.  
 
 ### (D) UCI_HD_Label-NG-2023-05-19: contains the all the files, data, and models to run the CNN from DeepLabCut
 
-- dlc-models: 
-- evaluation-results: 
-- labeled-data: 
-- training-datasets: 
-- config.yaml: hyperparameters 
+- dlc-models: contains pose_cfg.yaml which contains information about which specific body parts were labeled and trained on, along with several other hyperparameters
+- evaluation-results: contains excel files indicating the number of training iterations and error rate for the model along with labeled images for the training data
+- labeled-data: contains separate folders for each video trained on - each folder has a csv file for the labeled data and several frames from the video
+- training-datasets: contains an excel file that combines all of the training data in the labeled-data folder from each video
+- videos: contains the videos trained on, them labeled from the model, and corresponding excel files about the likelihood of each body part
+- config.yaml: file containing several general parameters for the model.  
 
 ### (E) data: contains all summary data provided by our collaborators
 
@@ -86,5 +87,3 @@ __post_injury.csv: Cleaned Post Injury csv file:__
 - anova_model.Rmd: R markdown file containing code for ANOVA and Kruskal-Wallis Test
 - dlc_model.ipynb: Jupyter notebook containing code for CNN
 
-
-## Conclusion: 

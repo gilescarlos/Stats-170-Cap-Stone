@@ -433,24 +433,37 @@ presented on April 21, 2023.</li>
 <h3>(B) wrangling: contains the files necessary to clean summary sheet
 data</h3>
 <ul>
-<li>cleaning_extracting.Rmd:</li>
+<li>cleaning_extracting.Rmd: R markdown file for cleaning and extracting
+summary sheet data from excel file provided by our sponsors.</li>
 </ul>
 </div>
 <div id="c-eda-contains-the-files-necessary-to-explore-the-data" class="section level3">
 <h3>(C) eda: contains the files necessary to explore the data</h3>
 <ul>
-<li>eda.Rmd:</li>
+<li>eda.Rmd: R markdown file containing code used for exploratory data
+analysis and creating plots.</li>
 </ul>
 </div>
 <div id="d-uci_hd_label-ng-2023-05-19-contains-the-all-the-files-data-and-models-to-run-the-cnn-from-deeplabcut" class="section level3">
 <h3>(D) UCI_HD_Label-NG-2023-05-19: contains the all the files, data,
 and models to run the CNN from DeepLabCut</h3>
 <ul>
-<li>dlc-models:</li>
-<li>evaluation-results:</li>
-<li>labeled-data:</li>
-<li>training-datasets:</li>
-<li>config.yaml: hyperparameters</li>
+<li>dlc-models: contains pose_cfg.yaml which contains information about
+which specific body parts were labeled and trained on, along with
+several other hyperparameters</li>
+<li>evaluation-results: contains excel files indicating the number of
+training iterations and error rate for the model along with labeled
+images for the training data</li>
+<li>labeled-data: contains separate folders for each video trained on -
+each folder has a csv file for the labeled data and several frames from
+the video</li>
+<li>training-datasets: contains an excel file that combines all of the
+training data in the labeled-data folder from each video</li>
+<li>videos: contains the videos trained on, them labeled from the model,
+and corresponding excel files about the likelihood of each body
+part</li>
+<li>config.yaml: file containing several general parameters for the
+model.</li>
 </ul>
 </div>
 <div id="e-data-contains-all-summary-data-provided-by-our-collaborators" class="section level3">
@@ -489,9 +502,6 @@ Kruskal-Wallis Test</li>
 <li>dlc_model.ipynb: Jupyter notebook containing code for CNN</li>
 </ul>
 </div>
-</div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion:</h2>
 </div>
 </div>
 
