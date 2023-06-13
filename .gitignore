@@ -46,4 +46,6 @@ data/*
 !data/DLC_example_raw.csv
 !data/A111.1 Ladder Beam Post-Injury.xls
 
+UCI_HD_Label-NG-2023-05-19/*
+
 .DS_Store

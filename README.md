@@ -11,6 +11,8 @@ This project is in collaboration with the Stem Cell Research Center at the UCI S
 
 Run in terminal: "git clone https://github.com/gilescarlos/Stats-170-Cap-Stone.git"
 
+Download DLC folder from google drive: https://drive.google.com/drive/folders/1N_iCZrvarWnR3yChDOUyAsdOwhwNt4AH?usp=sharing
+
 The project follows two separate pipelines: 
 
 __A. ANOVA and Kruskal-Wallis__
